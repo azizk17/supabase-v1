@@ -1,58 +1,44 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState, FormEvent } from 'react';
-import { useUser } from '@supabase/supabase-auth-helpers/react';
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs';
+// import { useRouter } from 'next/router';
+import { supabaseClient } from 'utils';
 
-import Button from 'components/ui/Button';
-import Input from 'components/ui/Input';
+import { Input, Button } from 'components/ui2';
 import Logo from 'components/icons/Logo';
-import { updateUserName } from 'utils/supabase-client';
-import { User } from '@supabase/gotrue-js';
+// import { User } from '@supabase/gotrue-js';
+import { useLogin, useTranslate } from '@pankod/refine-core';
+import { useNotification } from '@pankod/refine-core';
+import { useForm } from '@pankod/refine-react-hook-form';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetServerSideProps } from 'next';
 
-const SignUp = () => {
-  const [newUser, setNewUser] = useState<User | null>(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ type?: string; content?: string }>({
-    type: '',
-    content: ''
-  });
-  const router = useRouter();
-  const { user } = useUser();
+export interface ISignupForm {
+  name: string;
+  email: string;
+  password: string;
+}
 
-  const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+export const SignUp: React.FC = () => {
+  const t = useTranslate();
+  const { open, close } = useNotification();
 
-    setLoading(true);
-    setMessage({});
+  const {
+    refineCore: { formLoading },
+    register,
+    handleSubmit,
+    formState: { errors, isDirty, isValid }
+  } = useForm<ISignupForm>({ mode: 'onChange' });
+
+  const handleSignup = async (values: any) => {
     const { error, user: createdUser } = await supabaseClient.auth.signUp({
-      email,
-      password
+      // name: values.name,
+      email: values.email,
+      password: values.password
     });
     if (error) {
-      setMessage({ type: 'error', content: error.message });
+      open({ type: 'error', message: error.message });
     } else {
-      if (createdUser) {
-        await updateUserName(createdUser, name);
-        setNewUser(createdUser);
-      } else {
-        setMessage({
-          type: 'note',
-          content: 'Check your email for the confirmation link.'
-        });
-      }
     }
-    setLoading(false);
   };
-
-  useEffect(() => {
-    if (newUser || user) {
-      router.replace('/account');
-    }
-  }, [newUser, user]);
 
   return (
     <div className="flex justify-center height-screen-helper">
@@ -60,40 +46,29 @@ const SignUp = () => {
         <div className="flex justify-center pb-12 ">
           <Logo width="64px" height="64px" />
         </div>
-        <form onSubmit={handleSignup} className="flex flex-col space-y-4">
-          {message.content && (
-            <div
-              className={`${
-                message.type === 'error' ? 'text-pink-500' : 'text-green-500'
-              } border ${
-                message.type === 'error'
-                  ? 'border-pink-500'
-                  : 'border-green-500'
-              } p-3`}
-            >
-              {message.content}
-            </div>
-          )}
-          <Input placeholder="Name" onChange={setName} />
+        <form
+          onSubmit={handleSubmit(handleSignup)}
+          className="flex flex-col space-y-4"
+        >
+          <Input {...register('name', { required: true })} placeholder="Name" />
           <Input
+            {...register('email', { required: true })}
             type="email"
-            placeholder="Email"
-            onChange={setEmail}
-            required
+            placeholder={t('auth:pages.signUp.email', 'Email')}
           />
           <Input
+            {...register('password', { required: true })}
             type="password"
-            placeholder="Password"
-            onChange={setPassword}
+            placeholder={t('auth:pages.signUp.password', 'Password')}
           />
           <div className="pt-2 w-full flex flex-col">
             <Button
-              variant="slim"
               type="submit"
-              loading={loading}
-              disabled={loading || !email.length || !password.length}
+              loading={formLoading}
+              disabled={!isDirty || !isValid}
+              // disabled={formLoading || !email.length || !password.length}
             >
-              Sign up
+              {t('auth:pages.signUp.signUp', 'Sign up')}
             </Button>
           </div>
 
@@ -102,7 +77,7 @@ const SignUp = () => {
             {` `}
             <Link href="/signin">
               <a className="text-accent-9 font-bold hover:underline cursor-pointer">
-                Sign in.
+                {t('auth:pages.signIn.signIn', 'Sign in')}
               </a>
             </Link>
           </span>
@@ -110,6 +85,14 @@ const SignUp = () => {
       </div>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale ?? 'en', ['auth']))
+    }
+  };
 };
 
 export default SignUp;

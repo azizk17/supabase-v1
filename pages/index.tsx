@@ -1,23 +1,24 @@
-import Pricing from 'components/Pricing';
-import { getActiveProductsWithPrices } from 'utils/supabase-client';
-import { Product } from 'types';
-import { GetStaticPropsResult } from 'next';
+import { GetServerSideProps } from 'next';
+export { NextRouteComponent as default } from '@pankod/refine-nextjs-router';
+import { checkAuthentication } from '@pankod/refine-nextjs-router';
 
-interface Props {
-  products: Product[];
-}
+import { authProvider } from 'utils/authProvider';
 
-export default function PricingPage({ products }: Props) {
-  return <Pricing products={products} />;
-}
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
-  const products = await getActiveProductsWithPrices();
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { isAuthenticated, ...props } = await checkAuthentication(
+    authProvider,
+    context
+  );
+
+  if (!isAuthenticated) {
+    return props;
+  }
 
   return {
     props: {
-      products
-    },
-    revalidate: 60
+      ...(await serverSideTranslations(context.locale ?? 'en', ['common']))
+    }
   };
-}
+};
