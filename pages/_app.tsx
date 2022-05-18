@@ -27,11 +27,12 @@ import { supabaseClient } from 'utils';
 // } from "@components/layout";
 import { Layout } from '@/components/layout/Layout';
 import { appWithTranslation, useTranslation } from 'next-i18next';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider, useTheme } from 'next-themes';
 
 import { DashboardPage } from 'pages/dashboard';
 import { SignIn } from 'pages/signin';
 import { PostList } from 'resources/posts';
+import { CustomErrorComponent } from '@/components/errors';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { t, i18n } = useTranslation('common');
@@ -41,6 +42,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     changeLocale: (lang: string) => i18n.changeLanguage(lang),
     getLocale: () => i18n.language
   };
+  const { theme, setTheme } = useTheme();
 
   // const currThemes = {
   //   dark: `${process.env.PUBLIC_URL}/antd.dark-theme.css`,
@@ -54,7 +56,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         routerProvider={routerProvider}
         // notificationProvider={notificationProvider}
         // ReadyPage={ReadyPage}
-        // catchAll={<ErrorComponent />}
+        // catchAll={<CustomErrorComponent />}
         dataProvider={dataProvider(supabaseClient)}
         authProvider={authProvider}
         DashboardPage={DashboardPage}

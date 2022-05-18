@@ -4,9 +4,9 @@ import { BsPlusCircleFill } from 'react-icons/bs';
 
 export const ContentContainer: React.FC = ({ children }) => {
   return (
-    <div className="content-container">
+    <div className="flex flex-col items-center justify-start  m-0 h-full min-h-screen w-full">
       <TopNavigation />
-      <div className="content-list">
+      <div className="p-4">
         {children}
         {/* <Post
           name="Ada"

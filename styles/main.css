@@ -2,23 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 @import url('./layout.css');
-/* *,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-*:focus {
-  @apply outline-none ring-2 ring-pink-500 ring-opacity-50;
-}
-
-html {
+/* html {
   height: 100%;
   box-sizing: border-box;
   touch-action: manipulation;
   font-feature-settings: 'case' 1, 'rlig' 1, 'calt' 0;
 }
-
 html,
 body {
   font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
@@ -32,12 +21,23 @@ body {
   position: relative;
   min-height: 100%;
   margin: 0;
+} */
+/* *,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
+
+*:focus {
+  @apply outline-none ring-2 ring-pink-500 ring-opacity-50;
+}
+
+
 
 a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 } */
-
+/* 
 .animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -49,4 +49,4 @@ a {
 
 .height-screen-helper {
   height: calc(100vh - 80px);
-}
+} */
