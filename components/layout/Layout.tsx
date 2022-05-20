@@ -7,6 +7,8 @@ import ContentContainer from './ContentContainer';
 import SideBar from './SideBar';
 import ChannelBar from './ChannelBar';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export const Layout: React.FC = ({ children }) => {
   const { resources } = useResource();
   const { list } = useNavigation();
@@ -17,6 +19,9 @@ export const Layout: React.FC = ({ children }) => {
       <ChannelBar />
 
       <ContentContainer children={children} />
+
+      {/* Notification */}
+      <ToastContainer />
     </div>
   );
 };

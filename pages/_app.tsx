@@ -31,8 +31,10 @@ import { ThemeProvider, useTheme } from 'next-themes';
 
 import { DashboardPage } from 'pages/dashboard';
 import { SignIn } from 'pages/signin';
-import { PostList } from 'resources/posts';
-import { CustomErrorComponent } from '@/components/errors';
+import { LanguageList } from 'resources/languages';
+import { CountryList } from 'resources/countries';
+import { FiGlobe, FiMapPin } from 'react-icons/fi';
+// import { CustomErrorComponent } from '@/components/errors';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { t, i18n } = useTranslation('common');
@@ -70,8 +72,14 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         i18nProvider={i18nProvider}
         resources={[
           {
-            name: 'posts',
-            list: PostList
+            name: 'languages',
+            list: LanguageList,
+            icon: <FiGlobe />
+          },
+          {
+            name: 'countries',
+            list: CountryList,
+            icon: <FiMapPin />
           }
         ]}
       >
