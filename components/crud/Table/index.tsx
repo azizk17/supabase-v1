@@ -1,3 +1,5 @@
+import { CardHeader } from '@/components/ui/CardHeader';
+import Label from '@/components/ui2/Form/Label';
 import {
   Column,
   useFilters,
@@ -5,19 +7,24 @@ import {
   useSortBy,
   useTable
 } from '@pankod/refine-react-table';
-import React from 'react';
+import React, { Children } from 'react';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiChevronsLeft,
-  FiChevronsRight
+  FiChevronsRight,
+  FiFilter,
+  FiMoreVertical,
+  FiPlusSquare,
+  FiSearch
 } from 'react-icons/fi';
 import { Language } from 'types';
 
 type TableProps = {
+  title: string;
   columns: Array<Column>;
 };
-export const Table: React.FC<TableProps> = ({ columns }) => {
+export const Table: React.FC<TableProps> = ({ columns, title }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -36,17 +43,27 @@ export const Table: React.FC<TableProps> = ({ columns }) => {
     state: { pageIndex, pageSize, filters }
   } = useTable<Language>({ columns }, useFilters, useSortBy, usePagination);
   return (
-    <div className="flex flex-col">
-      <table className="table table-zebra border border-base-300 w-full">
+    <div className="flex flex-col w-full">
+      <CardHeader
+        title={title}
+        actions={
+          <div className="flex gap-2">
+            <button className="btn btn-sm">
+              <FiSearch />
+            </button>
+            <button className="btn btn-sm">
+              <FiFilter />
+            </button>
+          </div>
+        }
+      />
+      <table className="table table-zebra  w-full">
         {/* <!-- head --> */}
         <thead className="bg-gray-100">
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 "
-                >
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render('Header')}
                   <span>
                     {column.isSorted
@@ -65,16 +82,10 @@ export const Table: React.FC<TableProps> = ({ columns }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr
-                {...row.getRowProps()}
-                className="transition hover:bg-gray-100"
-              >
+              <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td
-                      {...cell.getCellProps()}
-                      className="whitespace-nowrap py-2 px-6 text-sm font-medium text-gray-900"
-                    >
+                    <td {...cell.getCellProps()} className="whitespace-nowrap ">
                       {cell.render('Cell')}
                     </td>
                   );
@@ -84,19 +95,34 @@ export const Table: React.FC<TableProps> = ({ columns }) => {
           })}
         </tbody>
       </table>
-      <div className=" flex relative  w-full min-w-full">
-        {TabelPaginnation({
-          pageIndex,
-          pageSize,
-          canPreviousPage,
-          canNextPage,
-          pageOptions,
-          pageCount,
-          gotoPage,
-          nextPage,
-          previousPage,
-          setPageSize
-        })}
+      {pageOptions.length > 1 && (
+        <div className=" flex relative  w-full min-w-full">
+          {TabelPaginnation({
+            pageIndex,
+            pageSize,
+            canPreviousPage,
+            canNextPage,
+            pageOptions,
+            pageCount,
+            gotoPage,
+            nextPage,
+            previousPage,
+            setPageSize
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const ColumnActions = ({ label, children }) => {
+  return (
+    <div className="dropdown dropdown-top dropdown-end">
+      <label tabIndex={0} className="btn btn-sm ">
+        {label ? label : <FiMoreVertical />}
+      </label>
+      <div tabIndex={0} className="dropdown-content   ">
+        {children}
       </div>
     </div>
   );
@@ -152,7 +178,7 @@ const TabelPaginnation = ({
           {pageIndex + 1} of {pageOptions.length}
         </strong>
       </span> */}
-      <div className="flex items-center  max-w-sm  space-x-1 rtl:space-x-reverse">
+      <div className="hidden sm:visible sm:flex items-center  max-w-sm  space-x-1 rtl:space-x-reverse">
         <strong>Page:</strong>
         <input
           type="number"
@@ -174,7 +200,7 @@ const TabelPaginnation = ({
         onChange={(e) => {
           setPageSize(Number(e.target.value));
         }}
-        className="select select-bordered  max-w-xs"
+        className="hidden sm:visible sm:flex select select-sm select-bordered  max-w-xs"
       >
         {[10, 20, 30, 40, 50].map((pageSize) => (
           <option key={pageSize} value={pageSize}>

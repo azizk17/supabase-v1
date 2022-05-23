@@ -111,7 +111,7 @@ export const LanguageList: React.FC = () => {
       pageHeaderProps={undefined}
       resource="languages"
     >
-      <Table columns={columns} />
+      <Table title="languages" columns={columns} />
     </Listing>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import {
   useTable,
   Column,
@@ -18,13 +18,18 @@ import {
   FiEdit,
   FiEye,
   FiTrash2,
-  FiPlusSquare
+  FiPlusSquare,
+  FiMoreVertical
 } from 'react-icons/fi';
 import { Listing } from '@/components/crud';
-import { Table } from '@/components/crud/Table';
+import { ColumnActions, Table } from '@/components/crud/Table';
+import Drawer from '@/components/ui/Drawer';
 export const CountryList: React.FC = () => {
   const { show, edit } = useNavigation();
   const { mutate } = useDelete();
+  const toggleEdit = (state, newVal) => {
+    return newVal;
+  };
 
   const columns: Array<Column> = React.useMemo(
     () => [
@@ -56,26 +61,34 @@ export const CountryList: React.FC = () => {
         Header: 'Action',
         accessor: 'id',
         Cell: ({ value }) => (
-          <div className="flex gap-2">
-            <button
-              className="rounded border border-gray-200 p-2 text-xs font-medium leading-tight transition duration-150 ease-in-out hover:bg-indigo-500 hover:text-white"
-              onClick={() => edit('Countrys', value)}
-            >
-              <FiEdit />
-            </button>
-            <button
-              className="rounded border border-gray-200 p-2 text-xs font-medium leading-tight transition duration-150 ease-in-out hover:bg-indigo-500 hover:text-white"
-              onClick={() => show('Countrys', value)}
-            >
-              <FiEye />
-            </button>
-            <button
-              className="rounded border border-gray-200 p-2 text-xs font-medium leading-tight transition duration-150 ease-in-out hover:bg-red-500 hover:text-white"
-              onClick={() => mutate({ id: value, resource: 'Countrys' })}
-            >
-              <FiTrash2 />
-            </button>
-          </div>
+          <ColumnActions label={<FiMoreVertical />}>
+            <ul className=" flex  items-center gap-2   p-2 shadow bg-base-100 rounded-box w-32">
+              <li>
+                <button
+                  className="btn btn-sm "
+                  onClick={() => edit('countries', value)}
+                >
+                  <FiEdit />
+                </button>
+              </li>
+              <li>
+                <button
+                  className="btn btn-sm "
+                  onClick={() => show('countries', value)}
+                >
+                  <FiEye />
+                </button>
+              </li>
+              <li>
+                <button
+                  className=" btn btn-sm btn-error"
+                  onClick={() => mutate({ id: value, resource: 'countries' })}
+                >
+                  <FiTrash2 />
+                </button>
+              </li>
+            </ul>
+          </ColumnActions>
         )
       }
     ],
@@ -108,7 +121,17 @@ export const CountryList: React.FC = () => {
       pageHeaderProps={undefined}
       resource="countries"
     >
-      <Table columns={columns} />
+      <Table title="Countries" columns={columns} />
+      {/* <Drawer open={edit} direction={'left'}>
+        <div className="flex flex-col">
+          <p className=" text-3xl ">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iusto
+            beatae culpa nobis optio ipsam quae maxime eius? Aut blanditiis sed
+            ab expedita cupiditate, vitae ratione aliquid veritatis voluptas,
+            enim culpa.
+          </p>
+        </div>
+      </Drawer> */}
     </Listing>
   );
 };

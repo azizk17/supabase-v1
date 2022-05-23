@@ -32,7 +32,12 @@ import { ThemeProvider, useTheme } from 'next-themes';
 import { DashboardPage } from 'pages/dashboard';
 import { SignIn } from 'pages/signin';
 import { LanguageList } from 'resources/languages';
-import { CountryList } from 'resources/countries';
+import {
+  CountryCreate,
+  CountryEdit,
+  CountryList,
+  CountryShow
+} from 'resources/countries';
 import { FiGlobe, FiMapPin } from 'react-icons/fi';
 // import { CustomErrorComponent } from '@/components/errors';
 
@@ -78,8 +83,11 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           },
           {
             name: 'countries',
+            icon: <FiMapPin />,
             list: CountryList,
-            icon: <FiMapPin />
+            edit: CountryEdit,
+            create: CountryCreate,
+            show: CountryShow
           }
         ]}
       >

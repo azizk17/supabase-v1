@@ -76,28 +76,16 @@ export const List = ({
   // );
 
   return (
-    <div className="card card-compact   w-full">
-      <div className="flex justify-between items-center p-4">
-        <h1 className="text-2xl font-bold">List</h1>
-        <div className="flex items-center">
-          <button className="bg-indigo-500 text-white p-2 rounded-full">
-            <FiSearch />
-          </button>
-          <button className="bg-indigo-500 text-white p-2 rounded-full">
-            <FiFilter />
-          </button>
-        </div>
+    <div className="  min-w-full  w-full ">
+      <div className=""></div>
+      {/* <h2 className="card-title">Shoes!</h2> */}
+      <div className="overflow-x-auto">
+        {/* <ListingTable br={columns} /> */}
+        {children}
       </div>
-      <div className="card-body">
-        {/* <h2 className="card-title">Shoes!</h2> */}
-        <div className="overflow-x-auto">
-          {/* <ListingTable br={columns} /> */}
-          {children}
-        </div>
-        <div className="card-actions justify-end">
+      {/* <div className="card-actions justify-end">
           <button className="btn btn-primary">Buy Now</button>
-        </div>
-      </div>
+        </div> */}
     </div>
   );
 };

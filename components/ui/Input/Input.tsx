@@ -1,36 +1,64 @@
-import React, { InputHTMLAttributes, ChangeEvent } from 'react';
-import cn from 'classnames';
-import s from './Input.module.css';
+import React, { forwardRef } from 'react';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-interface Props extends Omit<InputHTMLAttributes<any>, 'onChange'> {
-  className?: string;
-  onChange: (value: string) => void;
-}
-const Input = (props: Props) => {
-  const { className, children, onChange, ...rest } = props;
+import { IComponentBaseProps, ComponentColor, ComponentSize } from '../types';
 
-  const rootClassName = cn(s.root, {}, className);
-
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (onChange) {
-      onChange(e.target.value);
-    }
-    return null;
+export type InputProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'color'
+> &
+  IComponentBaseProps & {
+    bordered?: boolean;
+    borderOffset?: boolean;
+    size?: ComponentSize;
+    color?: ComponentColor;
+    error?: boolean;
   };
 
-  return (
-    <label>
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      value,
+      placeholder,
+      bordered = true,
+      borderOffset,
+      size,
+      color,
+      dataTheme,
+      className,
+      error,
+      type,
+      ...props
+    },
+    ref
+  ): JSX.Element => {
+    const classes = twMerge(
+      'input',
+      className,
+      clsx({
+        [`input-${size}`]: size,
+        [`input-${color}`]: color,
+        [`focus:outline-offset-0`]: !borderOffset,
+        'input-bordered': bordered,
+        'border-error input-error': error
+      })
+    );
+
+    return (
       <input
-        className={rootClassName}
-        onChange={handleOnChange}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        spellCheck="false"
-        {...rest}
+        {...props}
+        ref={ref}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        data-theme={dataTheme}
+        className={classes}
       />
-    </label>
-  );
-};
+    );
+  }
+);
+
+Input.displayName = 'Input';
 
 export default Input;

@@ -3,8 +3,10 @@ import { useForm } from '@pankod/refine-react-hook-form';
 import { useSelect } from '@pankod/refine-core';
 
 import { FiLoader } from 'react-icons/fi';
+import { FormElement } from '@/components/ui/Input/Input';
+import Form from '@/components/ui/Form';
 
-export const PostEdit: React.FC = () => {
+export const CountryEdit: React.FC = () => {
   const {
     refineCore: { onFinish, formLoading, queryResult },
     register,
@@ -13,36 +15,33 @@ export const PostEdit: React.FC = () => {
     formState: { errors }
   } = useForm();
 
-  const { options } = useSelect({
-    resource: 'categories',
-    defaultValue: queryResult?.data?.data.category.id
-  });
+  // const { options } = useSelect({
+  //   resource: 'categories',
+  //   defaultValue: queryResult?.data?.data.category.id
+  // });
 
-  useEffect(() => {
-    resetField('category.id');
-  }, [options]);
+  // useEffect(() => {
+  //   resetField('category.id');
+  // }, [options]);
 
   return (
     <div className="container mx-auto">
       <br />
-      <form onSubmit={handleSubmit(onFinish)}>
-        <div className="mb-6">
-          <label htmlFor="title" className="mb-2 block text-sm font-medium">
-            Title
-          </label>
-          <input
+      <Form.Label />
+      <Form
+        onSubmit={handleSubmit(onFinish)}
+        errors={errors}
+        loading={formLoading}
+      >
+        <Form.Item label="Hello">
+          <Form.Input
             {...register('title', { required: true })}
             type="text"
             id="title"
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm "
             placeholder="Title"
           />
-          {errors.title && (
-            <p className="mt-1 text-sm text-red-600">
-              <span className="font-medium">Oops!</span> This field is required
-            </p>
-          )}
-        </div>
+        </Form.Item>
+
         <div className="mb-6">
           <label htmlFor="status" className="mb-2 block text-sm font-medium">
             Status
@@ -60,7 +59,7 @@ export const PostEdit: React.FC = () => {
           <label htmlFor="category" className="mb-2 block text-sm font-medium">
             Category
           </label>
-          <select
+          {/* <select
             defaultValue={''}
             {...register('category.id', { required: true })}
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm"
@@ -73,7 +72,7 @@ export const PostEdit: React.FC = () => {
                 {category.label}
               </option>
             ))}
-          </select>
+          </select> */}
           {errors.category && (
             <p className="mt-1 text-sm text-red-600">
               <span className="font-medium">Oops!</span> This field is required
@@ -104,7 +103,7 @@ export const PostEdit: React.FC = () => {
           {formLoading && FiLoader}
           <span>Save</span>
         </button>
-      </form>
+      </Form>
     </div>
   );
 };

@@ -2,11 +2,10 @@ import { useShow, useOne } from '@pankod/refine-core';
 
 import { IPost, ICategory } from 'interfaces';
 
-export const PostShow: React.FC = () => {
+export const CountryShow: React.FC = () => {
   const { queryResult } = useShow<IPost>();
   const { data } = queryResult;
   const record = data?.data;
-
   const { data: categoryData } = useOne<ICategory>({
     resource: 'categories',
     id: record?.category.id || '',

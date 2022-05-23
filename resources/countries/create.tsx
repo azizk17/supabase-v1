@@ -3,7 +3,7 @@ import { useSelect } from '@pankod/refine-core';
 
 import { FiLoader } from 'react-icons/fi';
 
-export const PostCreate: React.FC = () => {
+export const CountryCreate: React.FC = () => {
   const {
     refineCore: { onFinish, formLoading },
     register,
