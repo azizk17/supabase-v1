@@ -1,0 +1,13 @@
+
+{
+"title": "scenes",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "clipId": "Clip id",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

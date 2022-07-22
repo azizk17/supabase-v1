@@ -1,32 +1,35 @@
-import React, { forwardRef } from 'react'
-import clsx from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import React, { forwardRef } from 'react';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 import {
   IComponentBaseProps,
   ComponentBrandColors,
-  ComponentSize,
-} from '../types'
+  ComponentSize
+} from '../types';
 
 export type ToggleProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   'size'
 > &
   IComponentBaseProps & {
-    color?: ComponentBrandColors
-    size?: ComponentSize
-  }
+    color?: ComponentBrandColors;
+    size?: ComponentSize;
+  };
 
 const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
-  ({ color, size, dataTheme, className, ...props }, ref): JSX.Element => {
+  (
+    { color = 'primary', size, dataTheme, className, ...props },
+    ref
+  ): JSX.Element => {
     const classes = twMerge(
       'toggle',
       className,
       clsx({
         [`toggle-${size}`]: size,
-        [`toggle-${color}`]: color,
+        [`toggle-${color}`]: color
       })
-    )
+    );
 
     return (
       <input
@@ -36,10 +39,10 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
         data-theme={dataTheme}
         className={classes}
       />
-    )
+    );
   }
-)
+);
 
-Toggle.displayName = 'Toggle'
+Toggle.displayName = 'Toggle';
 
-export default Toggle
+export default Toggle;

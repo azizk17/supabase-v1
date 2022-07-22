@@ -4,7 +4,7 @@ import { supabaseClient } from 'utils';
 import { Button } from 'components/ui2';
 import GitHub from 'components/icons/GitHub';
 import { Input } from 'components/ui2';
-import Logo from 'components/icons/Logo';
+import {Logo} from '@/components/Logo';
 import { Provider } from '@supabase/supabase-js';
 import camelCase from 'camelcase';
 // new
@@ -76,7 +76,7 @@ export const SignIn: React.FC = () => {
     <div className="flex justify-center height-screen-helper">
       <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-80 ">
         <div className="flex justify-center pb-12 ">
-          <Logo width="64px" height="64px" />
+          <Logo className='w-18' />
         </div>
         <div className="flex flex-col space-y-4">
           {error && (
@@ -196,8 +196,6 @@ export const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
@@ -205,3 +203,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   };
 };
+
+export default SignIn;
+

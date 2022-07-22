@@ -1,0 +1,14 @@
+
+{
+"title": "animations",
+"fields":{
+    "id": "Id",
+    "name": "Name",
+    "description": "Description",
+    "thumbs": "Thumbs",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

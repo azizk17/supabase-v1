@@ -1,0 +1,14 @@
+
+{
+"title": "stations",
+"fields":{
+    "id": "Id",
+    "name": "Name",
+    "description": "Description",
+    "thumb": "Thumb",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

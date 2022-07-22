@@ -1,0 +1,13 @@
+
+{
+"title": "trendlists",
+"fields":{
+    "id": "Id",
+    "date": "Date",
+    "trends": "Trends",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

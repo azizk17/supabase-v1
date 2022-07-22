@@ -1,0 +1,13 @@
+
+{
+"title": "profiles",
+"fields":{
+    "id": "Id",
+    "updatedAt": "Updated at",
+    "username": "Username",
+    "avatarUrl": "Avatar url",
+    "website": "Website"
+    }
+}
+
+

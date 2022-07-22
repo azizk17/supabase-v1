@@ -1,0 +1,14 @@
+{{!-- <%- include('../functions'); -%> --}}
+  {{#with definition.properties}}
+  <!-- <% definition.properties.map((fi) => { %> -->
+  {{#if this.relation}}
+  {{!-- <% if (fi.relation){ -%> --}}
+    {{!-- <% const { resource, column, _type}=fi.relation; -%> --}}
+      const { selectProps: {{ selectPropName 'ss' }} } = useSelect<{{ this.relation._type }}>({
+        resource: "{{ this.relation.resource }}",
+        optionValue: "{{ this.relation.column }}",
+        optionLabel: "{{ this.relation.column }}",
+        });
+        {{/if}}
+        {{/with}}
+        {{!-- <% }).join('\n ').trim(); -%> --}}

@@ -3,13 +3,17 @@ import React, { useEffect } from 'react';
 import NextRouter from '@pankod/refine-nextjs-router';
 import { useRouter } from 'next/router';
 import { useGetLocale } from '@pankod/refine-core';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 const { Link } = NextRouter;
 export const LocaleChanger: React.FC = () => {
   const locale = useGetLocale();
-  const { locales } = useRouter();
+  // const { locales } = useRouter();
+  const { pathname, asPath, query, locales, push } = useRouter();
+
   const currentLocale = locale();
-  const otherLocale = currentLocale === 'en' ? 'ar' : 'en';
-  const otherLocaleLable = otherLocale === 'en' ? 'English' : 'العربية';
+  // const otherLocale = currentLocale === 'en' ? 'ar' : 'en';
+  // const otherLocaleLable = otherLocale === 'en' ? 'English' : 'العربية';
 
   useEffect(() => {
     let dir = currentLocale == 'ar' ? 'rtl' : 'ltr';
@@ -18,17 +22,25 @@ export const LocaleChanger: React.FC = () => {
     document.querySelector('html').setAttribute('lang', lang);
   }, [currentLocale]);
 
+  const otherLocales = locales?.filter((locale) => locale !== currentLocale);
+
+  const handleClick = (nextLocale: string) => {
+    push({ pathname, query }, asPath, { locale: nextLocale });
+  };
   return (
-    <Link href="/" locale={otherLocale}>
-      <a className="flex items-center">
-        <div className="w-4 rounded">
-          <img
-            src={`/images/flags/${otherLocale}.svg`}
-            alt={otherLocaleLable}
-          />
-        </div>
-        <span>{otherLocaleLable}</span>
-      </a>
-    </Link>
+    <div className="">
+      {otherLocales?.map((locale) => (
+        <a
+          className="flex items-center justify-start space-x-2 rtl:space-x-reverse"
+          onClick={() => handleClick(locale)}
+          key={locale}
+        >
+          <div className="w-4 rounded">
+            <img src={`/images/flags/${locale}.svg`} alt={locale} />
+          </div>
+          <span>{locale === 'en' ? 'English' : 'العربية'}</span>
+        </a>
+      ))}
+    </div>
   );
 };

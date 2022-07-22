@@ -1,0 +1,13 @@
+
+{
+"title": "collectionsSources",
+"fields":{
+    "id": "Id",
+    "sourceId": "Source id",
+    "collectionId": "Collection id",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

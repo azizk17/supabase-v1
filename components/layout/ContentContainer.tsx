@@ -1,14 +1,18 @@
 import TopNavigation from './TopNavigation';
 import { BsPlusCircleFill } from 'react-icons/bs';
+import { SubSideBar } from './SideBar';
 // import { useState } from 'react';
 
 export const ContentContainer: React.FC = ({ children }) => {
   return (
-    <div className="flex flex-col   items-start justify-start  m-0 h-full min-h-screen w-full">
+    <div className="flex flex-col ltr:ml-16 rtl:mr-16  items-start justify-start  m-0 h-full min-h-screen w-full">
       <TopNavigation />
-      <div className="p-4 w-full">
-        {children}
-        {/* <Post
+      <div className=' flex h-full w-full'>
+        {/* TODO: submenu */}
+        {/* <SubSideBar /> */}
+        <div className=" w-full">
+          {children}
+          {/* <Post
           name="Ada"
           timestamp="one week ago"
           text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit
@@ -64,6 +68,7 @@ export const ContentContainer: React.FC = ({ children }) => {
           adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
           ipsum dolor sit amet consectetur adipisicing elit.`}
         /> */}
+        </div>
       </div>
       <BottomBar />
     </div>

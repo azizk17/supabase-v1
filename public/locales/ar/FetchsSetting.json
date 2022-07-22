@@ -1,0 +1,11 @@
+
+{
+"title": "fetchsSettings",
+"fields":{
+    "rateLimit": "Rate limit",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

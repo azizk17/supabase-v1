@@ -1,0 +1,20 @@
+onSearch: (params) => {
+  const filters: CrudFilters = [];
+  const { createdAt } = params;
+  // const { <%- definition.properties.map(v => `"${v.name}"`).join(', ') -%> } = params;
+  filters.push(
+    // {operator: "eq",value: categoryAsExsample,},
+    {
+      field: "createdAt",
+      operator: "gte",
+      value: createdAt ? createdAt[0].toISOString() : undefined,
+    },
+    {
+      field: "createdAt",
+      operator: "lte",
+      value: createdAt ? createdAt[1].toISOString() : undefined,
+    },
+  );
+  
+  return filters;
+},

@@ -1,0 +1,13 @@
+
+{
+"title": "languages",
+"fields":{
+    "id": "Id",
+    "code": "Code",
+    "name": "Name",
+    "enabled": "Enabled",
+    "updatedAt": "Updated at"
+    }
+}
+
+

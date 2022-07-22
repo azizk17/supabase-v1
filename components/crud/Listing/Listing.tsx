@@ -1,5 +1,12 @@
 import React, { ReactNode } from 'react';
-import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from 'react-icons/fi';
+import {
+  FiEdit,
+  FiEye,
+  FiFilter,
+  FiPlusCircle,
+  FiSearch,
+  FiTrash2
+} from 'react-icons/fi';
 import {
   useTable,
   Column,
@@ -17,6 +24,7 @@ import {
 } from '@pankod/refine-core';
 import { mutate } from 'swr';
 import { Language } from 'types';
+import { Button } from '@/components/ui2';
 
 // export type CreateButtonProps = ButtonProps & {
 export type CreateButtonProps = {
@@ -35,6 +43,7 @@ export interface ListProps {
   createButtonProps?: CreateButtonProps;
   pageHeaderProps?: PageHeaderProps;
   resource?: string;
+  route?: string;
 }
 
 export const List = ({
@@ -63,21 +72,27 @@ export const List = ({
 
   const resource = resourceWithRoute(resourceFromProps ?? routeResourceName);
 
+  const createRoute = createButtonProps?.resourceNameOrRouteName
+    ? createButtonProps.resourceNameOrRouteName
+    : `${resource.route}/create`;
   const isCreateButtonVisible =
     canCreate ?? (resource.canCreate || createButtonProps);
-
-  // const defaultExtra = isCreateButtonVisible && (
-  //   <Button
-  //     size="md"
-  //     resourceNameOrRouteName={resource.route}
-  //     data-testid="list-create-button"
-  //     {...createButtonProps}
-  //   />
-  // );
+  const defaultExtra = isCreateButtonVisible && (
+    <Button
+      className="p-2 rounded-full"
+      icon={<FiPlusCircle />}
+      href={createRoute}
+      // resourceNameOrRouteName={resource.route}
+      data-testid="list-create-button"
+      {...createButtonProps}
+    >
+      {!createButtonProps?.hideText && translate('actions.create', 'Create')}
+    </Button>
+  );
 
   return (
     <div className="  min-w-full  w-full ">
-      <div className=""></div>
+      <ListingHeader title={title} extra={defaultExtra} />
       {/* <h2 className="card-title">Shoes!</h2> */}
       <div className="overflow-x-auto">
         {/* <ListingTable br={columns} /> */}
@@ -90,15 +105,16 @@ export const List = ({
   );
 };
 
-const ListingHeader = () => {
+const ListingHeader = ({ title, extra }) => {
   return (
     <div className="flex justify-between items-center p-4">
-      <h1 className="text-2xl font-bold">List</h1>
-      <div className="flex items-center">
-        <button className="bg-indigo-500 text-white p-2 rounded-full">
+      <h1 className="text-2xl font-bold">{title}</h1>
+      <div className="flex items-center space-x-1">
+        {extra}
+        <button className=" p-2 rounded-full">
           <FiSearch />
         </button>
-        <button className="bg-indigo-500 text-white p-2 rounded-full">
+        <button className=" p-2 rounded-full">
           <FiFilter />
         </button>
       </div>

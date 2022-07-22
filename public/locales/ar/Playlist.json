@@ -1,0 +1,15 @@
+
+{
+"title": "playlists",
+"fields":{
+    "id": "Id",
+    "name": "Name",
+    "channelId": "Channel id",
+    "description": "Description",
+    "thumb": "Thumb",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

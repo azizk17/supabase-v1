@@ -7,7 +7,7 @@ import {
   FaSun
 } from 'react-icons/fa';
 import { Dropdown } from '../ui2';
-
+import Breadcrumbs from '@/components/Breadcrumb'
 export const TopNavigation: React.FC = () => {
   return (
     // <div className="flex flex-row items-center justify-evenly bg-gray-300 dark:bg-gray-700 bg-opacity-90 w-full h-16 m-0 shadow-lg">
@@ -25,13 +25,17 @@ const Header: React.FC = () => {
   const hasSubMenu = false;
   return (
     <div
-      className={`navbar w-full  bg-base-300 rounded-none m-0 ${
+      className={`navbar w-full  bg-base-300 rounded-none m-0 py-1 ${
         hasSubMenu && 'ltr:ml-16 rtl:mr-16'
       }`}
     >
-      <div className="flex-1">
-        {/* <a className="btn btn-ghost normal-case text-xl">daisyUI</a> */}
-        <p> title here</p>
+      <div className="flex-1 ">
+        <div className="flex flex-col items-start justify-start p-0 m-0 space-y-0 text-start">
+        {/* <a className="normal-case  p-0 text-start ">daisyUI</a> */}
+
+        <Breadcrumbs omitRootLabel className='p-0 m-0' />
+        </div>
+
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">

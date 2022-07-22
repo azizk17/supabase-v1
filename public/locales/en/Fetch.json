@@ -1,0 +1,16 @@
+
+{
+"title": "fetchs",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "description": "Description",
+    "output": "Output",
+    "status": "Status",
+    "duration": "Duration",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

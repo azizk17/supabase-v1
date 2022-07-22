@@ -1,0 +1,15 @@
+
+{
+"title": "trends",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "description": "Description",
+    "thumb": "Thumb",
+    "views": "Views",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

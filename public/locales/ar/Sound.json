@@ -1,0 +1,17 @@
+
+{
+"title": "sounds",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "duration": "Duration",
+    "metadata": "Metadata",
+    "sourceId": "Source id",
+    "thumb": "Thumb",
+    "url": "Url",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

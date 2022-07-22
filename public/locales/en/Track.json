@@ -1,0 +1,14 @@
+
+{
+"title": "tracks",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "templateId": "Template id",
+    "thumb": "Thumb",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

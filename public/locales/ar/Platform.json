@@ -1,0 +1,12 @@
+
+{
+"title": "platforms",
+"fields":{
+    "name": "Name",
+    "label": "Label",
+    "status": "Status",
+    "url": "Url"
+    }
+}
+
+

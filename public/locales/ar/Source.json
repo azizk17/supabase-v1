@@ -1,0 +1,19 @@
+
+{
+"title": "sources",
+"fields":{
+    "id": "Id",
+    "username": "Username",
+    "disabled": "Disabled",
+    "screenshots": "Screenshots",
+    "status": "Status",
+    "thumb": "Thumb",
+    "url": "Url",
+    "platformName": "Platform name",
+    "credentialId": "Credential id",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

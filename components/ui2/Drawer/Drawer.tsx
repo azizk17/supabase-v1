@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 import { IComponentBaseProps } from '../types'
+import { FullWidth } from '../Carousel/Carousel.stories'
 
 export type DrawerProps = React.HTMLAttributes<HTMLDivElement> &
   IComponentBaseProps & {
@@ -11,6 +12,7 @@ export type DrawerProps = React.HTMLAttributes<HTMLDivElement> &
     open?: boolean
     mobile?: boolean
     end?: boolean
+    full?: boolean
   }
 
 const Drawer = ({
@@ -22,6 +24,7 @@ const Drawer = ({
   id,
   dataTheme,
   className,
+  full,
   ...props
 }: DrawerProps) => {
   const classes = twMerge(
@@ -30,6 +33,7 @@ const Drawer = ({
     clsx({
       'drawer-mobile': mobile,
       'drawer-end': end,
+      'fixed z-40': full
     })
   )
 
@@ -41,10 +45,13 @@ const Drawer = ({
       className={classes}
     >
       <input id={id} type="checkbox" className="drawer-toggle" checked={open} />
-      <div className="drawer-content">{children}</div>
-      <div className="drawer-side">
-        <label htmlFor={id} className="drawer-overlay"></label>
+      <div className="drawer-content w-full h-full">{children}</div>
+      <div className="drawer-side z-40 top-0 fixed  ">
+        <label htmlFor={id} className="drawer-overlay w-full"></label>
+        <div className=''>
+
         {side}
+        </div>
       </div>
     </div>
   )

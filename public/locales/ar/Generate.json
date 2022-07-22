@@ -1,0 +1,14 @@
+
+{
+"title": "generates",
+"fields":{
+    "id": "Id",
+    "templateId": "Template id",
+    "metadata": "Metadata",
+    "status": "Status",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

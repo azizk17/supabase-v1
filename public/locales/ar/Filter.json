@@ -1,0 +1,13 @@
+
+{
+"title": "filters",
+"fields":{
+    "id": "Id",
+    "name": "Name",
+    "thumb": "Thumb",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

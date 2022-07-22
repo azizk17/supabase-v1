@@ -1,32 +1,33 @@
-import React, { forwardRef, ReactNode } from 'react'
-import clsx from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import React, { forwardRef, ReactNode } from 'react';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 import {
   IComponentBaseProps,
   ComponentColor,
   ComponentShape,
-  ComponentSize,
-} from '../types'
+  ComponentSize
+} from '../types';
+import Link from 'next/link';
 
 export type ButtonProps = Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   'color'
 > &
   IComponentBaseProps & {
-    href?: string
-    shape?: ComponentShape
-    size?: ComponentSize
-    variant?: 'outline' | 'link'
-    color?: ComponentColor
-    fullWidth?: boolean
-    responsive?: boolean
-    animation?: boolean
-    loading?: boolean
-    active?: boolean
-    startIcon?: ReactNode
-    endIcon?: ReactNode
-  }
+    href?: string;
+    shape?: ComponentShape;
+    size?: ComponentSize;
+    variant?: 'outline' | 'link';
+    color?: ComponentColor;
+    fullWidth?: boolean;
+    responsive?: boolean;
+    animation?: boolean;
+    loading?: boolean;
+    active?: boolean;
+    startIcon?: ReactNode;
+    endIcon?: ReactNode;
+  };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -65,18 +66,20 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'no-animation': !animation,
         'btn-active': active,
         'btn-disabled': disabled,
-        loading: loading,
+        loading: loading
       })
-    )
+    );
 
     if (href) {
       return (
-        <a className={classes} style={style} href={href}>
-          {startIcon && startIcon}
-          {children}
-          {endIcon && endIcon}
-        </a>
-      )
+        <Link  href={href}>
+          <a className={classes} style={style}>
+            {startIcon && startIcon}
+            {children}
+            {endIcon && endIcon}
+          </a>
+        </Link>
+      );
     } else {
       return (
         <button
@@ -91,11 +94,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {children}
           {endIcon && endIcon}
         </button>
-      )
+      );
     }
   }
-)
+);
 
-Button.displayName = 'Button'
+Button.displayName = 'Button';
 
-export default Button
+export default Button;

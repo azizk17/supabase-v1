@@ -1,0 +1,11 @@
+
+{
+"title": "platformSettings",
+"fields":{
+    "platformName": "Platform name",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

@@ -26,6 +26,9 @@ type TableProps = {
 };
 export const Table: React.FC<TableProps> = ({ columns, title }) => {
   const {
+    refineCore: {
+      tableQueryResult: { data, totalCount }
+    },
     getTableProps,
     getTableBodyProps,
     headerGroups,
@@ -114,21 +117,52 @@ export const Table: React.FC<TableProps> = ({ columns, title }) => {
     </div>
   );
 };
-
-export const ColumnActions = ({ label, children }) => {
+interface ColumnActionsProps {
+  label: React.ReactNode;
+  items: Array<{
+    label: React.ReactNode;
+    icon: React.ReactNode;
+    onClick: () => void;
+  }>;
+  children?: React.ReactNode;
+}
+export const ColumnActions: React.FC<ColumnActionsProps> = ({
+  label,
+  items,
+  children
+}) => {
   return (
     <div className="dropdown dropdown-top dropdown-end">
       <label tabIndex={0} className="btn btn-sm ">
         {label ? label : <FiMoreVertical />}
       </label>
       <div tabIndex={0} className="dropdown-content   ">
-        {children}
+        {items && items.length > 0 && (
+          <ul className=" flex  items-center gap-2   p-2 shadow bg-base-100 rounded-box w-32">
+            {items.map((item) => (
+              <li className="flex items-center">{item}</li>
+            ))}
+          </ul>
+        )}
+        {/* {children} */}
       </div>
     </div>
   );
 };
 
-const TabelPaginnation = ({
+interface TabelPaginnationProps {
+  pageIndex: number;
+  pageSize: number;
+  canPreviousPage: boolean;
+  canNextPage: boolean;
+  pageOptions: Array<number>;
+  pageCount: number;
+  gotoPage: (page: number) => void;
+  nextPage: () => void;
+  previousPage: () => void;
+  setPageSize: (pageSize: number) => void;
+}
+const TabelPaginnation: React.FC<TabelPaginnationProps> = ({
   pageIndex,
   pageSize,
   canPreviousPage,

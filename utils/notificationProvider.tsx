@@ -1,7 +1,7 @@
 import React from 'react';
 import { NotificationProvider } from '@pankod/refine-core';
 import { toast } from 'react-toastify';
-import { UndoableNotification } from '/@/components/UndoableNotification';
+import { UndoableNotification } from '@/components/UndoableNotification';
 
 export const notificationProvider: NotificationProvider = {
   open: ({ key, message, type, undoableTimeout, cancelMutation }) => {

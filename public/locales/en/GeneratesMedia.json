@@ -1,0 +1,12 @@
+
+{
+"title": "generatesMedia",
+"fields":{
+    "generateId": "Generate id",
+    "mediaId": "Media id",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

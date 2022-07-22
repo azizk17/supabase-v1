@@ -1,0 +1,60 @@
+<% include('../functions'); -%>
+const columns: Array<Column> = React.useMemo(
+    () => [
+<% definition.properties.map((fi) => { -%>
+      {
+        id: '<%= fi.name -%>',
+        Header: t(<%- localeKeyForField(fi.name) %>),
+        accessor: '<%= fi.name %>',
+        <% if (fi.type === 'boolean') { -%>
+            Cell: ({ value }) => (value ? 'Yes' : 'No')
+        <% } else if (fi.type === 'Date') { -%>
+            Cell: ({ value }) => (value ? value.toLocaleString() : '')
+        <% } else if (fi.type === 'number') { -%>
+            Cell: ({ value }) => (value ? value.toLocaleString() : '')
+        <% } else if (fi.type === 'string') { -%>
+            Cell: ({ value }) => (value ? value.toLocaleString() : '')
+        <% } else if (fi.type === 'object') { -%>
+            Cell: ({ value }) => (value ? JSON.stringify(value) : '')
+        <% } else if (fi.type === 'array') { -%>
+            Cell: ({ value }) => (value ? JSON.stringify(value) : '')
+        <% } else if (fi.type === 'enum') { -%>
+            Cell: ({ value }) => (value ? JSON.stringify(value) : '')
+        <% } else if (fi.type === 'objectId') { -%>
+            Cell: ({ value }) => (value ? JSON.stringify(value) : '')
+        <% } else { -%>
+            Cell: ({ value }) => (value ? JSON.stringify(value) : '')
+        <% } -%>
+    },
+<% }); -%> 
+    {
+    id: 'action',
+    Header: 'Action',
+    accessor: 'id',
+    Cell: ({ value }) => (
+        <ColumnActions
+        label={<FiMoreVertical />}
+        items={[
+            {
+            label: t('actions.show', 'Show'),
+            icon: <FiEye />,
+            onClick: () => show('definition.__resource', value)
+            },
+            {
+            label: t('actions.edit', 'Edit'),
+            icon: <FiEdit />,
+            onClick: () => edit('definition.__resource', value)
+            },
+            {
+            label: t('actions.delete', 'Delete'),
+            icon: <FiTrash2 />,
+            onClick: () => mutate({ id: value, resource: 'definition.__resource' })
+            }
+        ]}
+        >
+        </ColumnActions>
+    )
+      }
+    ],
+    []
+  );

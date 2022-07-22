@@ -1,0 +1,16 @@
+
+{
+"title": "templates",
+"fields":{
+    "id": "Id",
+    "key": "Key",
+    "name": "Name",
+    "description": "Description",
+    "thumb": "Thumb",
+    "metadata": "Metadata",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

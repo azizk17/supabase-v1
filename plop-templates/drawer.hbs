@@ -1,0 +1,39 @@
+import {
+    List,
+    TextField,
+    TagField,
+    DateField,
+    Table,
+    useTable,
+} from "@pankod/refine-antd";
+
+export interface IPost {
+    id: string;
+    title: string;
+    status: "published" | "draft" | "rejected";
+    createdAt: string;
+}
+
+export const {{this.__moduleName}}List: React.FC = () => {
+    {{> selectData }}
+    const { tableProps } = useTable<IPost>();
+
+    return (
+        {{> table }}
+        {{!-- <List>
+            <Table {...tableProps} rowKey="id">
+                <Table.Column dataIndex="title" title="title" />
+                <Table.Column
+                    dataIndex="status"
+                    title="status"
+                    render={(value) => <TagField value={value} />}
+                />
+                <Table.Column
+                    dataIndex="createdAt"
+                    title="createdAt"
+                    render={(value) => <DateField format="LLL" value={value} />}
+                />
+            </Table>
+        </List> --}}
+    );
+};

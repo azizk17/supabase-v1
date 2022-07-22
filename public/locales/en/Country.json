@@ -1,0 +1,15 @@
+
+{
+"title": "countries",
+"fields":{
+    "id": "Id",
+    "name": "Name",
+    "iso2": "Iso2",
+    "iso3": "Iso3",
+    "localName": "Local name",
+    "continent": "Continent",
+    "Enabled": "Enabled"
+    }
+}
+
+

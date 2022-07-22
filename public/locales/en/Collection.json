@@ -1,0 +1,15 @@
+
+{
+"title": "collections",
+"fields":{
+    "id": "Id",
+    "parentId": "Parent id",
+    "name": "Name",
+    "thumb": "Thumb",
+    "metadata": "Metadata",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

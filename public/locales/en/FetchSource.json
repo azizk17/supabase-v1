@@ -1,0 +1,19 @@
+
+{
+"title": "fetchSource",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "dexcription": "Dexcription",
+    "output": "Output",
+    "status": "Status",
+    "sourceId": "Source id",
+    "fetchId": "Fetch id",
+    "duration": "Duration",
+    "resultes": "Resultes",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

@@ -1,0 +1,14 @@
+
+{
+"title": "incomes",
+"fields":{
+    "id": "Id",
+    "amount": "Amount",
+    "channelId": "Channel id",
+    "transactionNumber": "Transaction number",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

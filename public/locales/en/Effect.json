@@ -1,0 +1,14 @@
+
+{
+"title": "effects",
+"fields":{
+    "id": "Id",
+    "name": "Name",
+    "descriptions": "Descriptions",
+    "thumb": "Thumb",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

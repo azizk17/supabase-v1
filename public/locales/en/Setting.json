@@ -1,0 +1,10 @@
+
+{
+"title": "settings",
+"fields":{
+    "id": "Id",
+    "name": "Name"
+    }
+}
+
+

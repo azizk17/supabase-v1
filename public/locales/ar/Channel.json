@@ -1,0 +1,24 @@
+
+{
+"title": "channels",
+"fields":{
+    "id": "Id",
+    "name": "Name",
+    "apikey": "Apikey",
+    "countryId": "Country id",
+    "credentialId": "Credential id",
+    "languageId": "Language id",
+    "metadata": "Metadata",
+    "orginalUrl": "Orginal url",
+    "stationId": "Station id",
+    "platformName": "Platform name",
+    "thumb": "Thumb",
+    "description": "Description",
+    "logo": "Logo",
+    "watermark": "Watermark",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

@@ -35,7 +35,7 @@ export const ThemeChanger = ({ size = 'md' }) => {
       </div> */}
       <a onClick={toggleTheme}>
         <label className="swap swap-rotate">
-          <input type="checkbox" checked={theme === 'dark'} />
+          <input type="checkbox" checked={theme === 'dark'} readOnly />
 
           <svg
             className={`swap-on fill-current ${_iconSize()}`}

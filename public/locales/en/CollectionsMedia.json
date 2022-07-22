@@ -1,0 +1,14 @@
+
+{
+"title": "collectionsMedia",
+"fields":{
+    "id": "Id",
+    "collectionId": "Collection id",
+    "mediaId": "Media id",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "deleted": "Deleted"
+    }
+}
+
+

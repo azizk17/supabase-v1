@@ -7,9 +7,8 @@ import {
   useFilters
 } from '@pankod/refine-react-table';
 import { useNavigation, useDelete } from '@pankod/refine-core';
-
 import { Country } from 'types';
-
+import { Sheet } from '@/components/index';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -27,9 +26,6 @@ import Drawer from '@/components/ui/Drawer';
 export const CountryList: React.FC = () => {
   const { show, edit } = useNavigation();
   const { mutate } = useDelete();
-  const toggleEdit = (state, newVal) => {
-    return newVal;
-  };
 
   const columns: Array<Column> = React.useMemo(
     () => [
@@ -114,12 +110,13 @@ export const CountryList: React.FC = () => {
   // } = useTable<Country>({ columns }, useFilters, useSortBy, usePagination);
 
   return (
-    <Listing
+    <Sheet
       canCreate={undefined}
-      title={undefined}
+      title={"Countries"}
       createButtonProps={undefined}
       pageHeaderProps={undefined}
       resource="countries"
+      columns={undefined}
     >
       <Table title="Countries" columns={columns} />
       {/* <Drawer open={edit} direction={'left'}>
@@ -132,6 +129,6 @@ export const CountryList: React.FC = () => {
           </p>
         </div>
       </Drawer> */}
-    </Listing>
+    </Sheet>
   );
 };

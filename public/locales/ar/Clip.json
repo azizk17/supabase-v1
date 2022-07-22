@@ -1,0 +1,16 @@
+
+{
+"title": "clips",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "description": "Description",
+    "sourceId": "Source id",
+    "thumb": "Thumb",
+    "url": "Url",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

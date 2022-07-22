@@ -1,0 +1,21 @@
+
+{
+"title": "generatedVideos",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "description": "Description",
+    "channelId": "Channel id",
+    "generateId": "Generate id",
+    "metadata": "Metadata",
+    "status": "Status",
+    "textTracksFileUrl": "Text tracks file url",
+    "publishingAt": "Publishing at",
+    "thumbs": "Thumbs",
+    "url": "Url",
+    "updatedAt": "Updated at",
+    "createdAt": "Created at"
+    }
+}
+
+

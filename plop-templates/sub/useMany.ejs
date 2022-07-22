@@ -1,0 +1,12 @@
+<% definition.properties.map((fi) => {   %> 
+<%  if (fi.hasOwnProperty("relation") && Object.keys(fi.relation).length) { -%>
+<%  const {resource, column, _type} = fi.relation; -%>
+<%  if (resource && column) {  -%>
+const <%= resource %>Ids = tableProps?.dataSource?.map((item) => item.id) ?? [];
+const { data: <%= resource %> } = useMany<<%= _type %>>({
+resource: "<%= resource %>",
+ids: <%= resource %>Ids,
+});
+<% } -%>
+<% } -%>
+<% }).join('\n ').trim(); _%>

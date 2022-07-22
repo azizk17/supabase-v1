@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { supabaseClient } from 'utils';
 
 import { Input, Button } from 'components/ui2';
-import Logo from 'components/icons/Logo';
+import {Logo} from '@/components/Logo';
 // import { User } from '@supabase/gotrue-js';
 import { useLogin, useTranslate } from '@pankod/refine-core';
 import { useNotification } from '@pankod/refine-core';
@@ -44,7 +44,7 @@ export const SignUp: React.FC = () => {
     <div className="flex justify-center height-screen-helper">
       <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-80 ">
         <div className="flex justify-center pb-12 ">
-          <Logo width="64px" height="64px" />
+          <Logo  className=' w-18'/>
         </div>
         <form
           onSubmit={handleSubmit(handleSignup)}

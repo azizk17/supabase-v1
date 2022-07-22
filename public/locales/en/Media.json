@@ -1,0 +1,18 @@
+
+{
+"title": "media",
+"fields":{
+    "id": "Id",
+    "uuid": "Uuid",
+    "name": "Name",
+    "fileType": "File type",
+    "metadata": "Metadata",
+    "fileSize": "File size",
+    "url": "Url",
+    "thumb": "Thumb",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+

@@ -1,0 +1,21 @@
+
+{
+"title": "videos",
+"fields":{
+    "id": "Id",
+    "title": "Title",
+    "description": "Description",
+    "channelId": "Channel id",
+    "chapters": "Chapters",
+    "metadata": "Metadata",
+    "status": "Status",
+    "textTracksFileUrl": "Text tracks file url",
+    "publishingAt": "Publishing at",
+    "thumbs": "Thumbs",
+    "url": "Url",
+    "updatedAt": "Updated at",
+    "createdAt": "Created at"
+    }
+}
+
+

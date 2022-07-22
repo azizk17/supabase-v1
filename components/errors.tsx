@@ -3,7 +3,8 @@ import {
   useNavigation,
   useTranslate,
   useResourceWithRoute,
-  useRouterContext
+  useRouterContext,
+  LayoutWrapper
 } from '@pankod/refine-core';
 import { ResourceErrorRouterParams } from '@pankod/refine-core';
 
@@ -47,7 +48,10 @@ export const CustomErrorComponent: React.FC = () => {
   }, [params]);
 
   return (
-    <div className="card w-96 bg-neutral text-neutral-content">
+    <LayoutWrapper>
+      <div className=' py-10 flex justify-center items-center w-full h-full'>
+
+    <div className="card w-full max-w-xl bg-neutral text-neutral-content">
       <div className="card-body items-center text-center">
         <h2 className="card-title text-3xl">404</h2>
         {/* <p>{t('errors.404')}</p> */}
@@ -63,5 +67,7 @@ export const CustomErrorComponent: React.FC = () => {
         </div>
       </div>
     </div>
+      </div>
+    </LayoutWrapper>
   );
 };

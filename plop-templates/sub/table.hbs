@@ -1,0 +1,22 @@
+{{{JSONstringify this}}}
+
+<Table {...tableProps} rowKey="id">
+    {{#forEach this.properties}}
+    {/*
+    * @property {{ name }}
+    * @type {{ type }}
+    {{#if description}} * {{{description}}} {{/if}}
+    */}
+    <Table.Column title={translate("{{ __moduleName }}:fields.{{ name }}", "{{ name }}" )} dataIndex="{{ name }}"
+        key="{{ name }}" sorter render={(text, record)=>
+        <Link href={`/${record.id}`}>{text}</Link>}
+        {{hasOwn this "relation" }}
+        {{#if relation.resource }}
+        render={(text, record) => {
+        const {{ relation.resource }} = {{ relation.resource }}Ids.find(item => item.id === record.id);
+        return {{ relation.resource }}?.{{ relation.column }};
+        }}
+        {{/if}}
+        />
+        {{/forEach}}
+</Table>

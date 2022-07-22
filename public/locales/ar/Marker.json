@@ -1,0 +1,14 @@
+
+{
+"title": "markers",
+"fields":{
+    "id": "Id",
+    "endAt": "End at",
+    "startAt": "Start at",
+    "trackId": "Track id",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+    }
+}
+
+
