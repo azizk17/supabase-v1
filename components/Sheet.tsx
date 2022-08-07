@@ -101,12 +101,12 @@ export const Sheet: FC<SheetProps> = ({
   return (
     <div className='p-2'>
       {loading ? <OnLoading /> :
-        <Card compact bordered={false} className=' h-full  w-full  min-h-full '>
+        <Card compact bordered={false} className=' h-full  w-full  min-h-full overflow-visible '>
           <CardBody>
             <SheetHeader title={title} extra={defaultExtra} />
             <div className="  min-w-full  w-full ">
               {/* <h2 className="card-title">Shoes!</h2> */}
-              <div className="overflow-x-auto">
+              <div className=" overflow-visible  ">
                 {/* <ListingTable br={columns} /> */}
                 {children}
               </div>

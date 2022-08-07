@@ -10,7 +10,7 @@ export const UndoableNotification: React.FC<UndoableNotification> = ({
     message,
 }) => {
     return (
-        <div>
+        <div className=" bg-base-100">
             <p>{message}</p>
             <button
                 onClick={() => {

@@ -22,7 +22,7 @@ export const SubMenuBar: React.FC = ({ title, menu }) => {
 
       <div className=" px-4 py-1">
         {menu.map((item) => (
-          <ul className=" grid grid-cols-1 list-none ">
+          <ul className=" grid grid-cols-1 list-none " key={item.link}>
             <li className=" py-0.5">
               <NavLink href={item.link}  activeClassName={"text-primary"}>
                 <a

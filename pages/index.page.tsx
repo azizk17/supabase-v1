@@ -10,6 +10,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { isAuthenticated, ...props } = await checkAuthentication(
     authProvider,
     context
+
   );
 
   if (!isAuthenticated) {

@@ -42,8 +42,9 @@ export const authProvider: AuthProvider = {
     if (user) {
       return Promise.resolve();
     }
-
-    return Promise.reject();
+    console.log("Before redirect: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    
+    return Promise.reject({ redirectPath: '/asda' });
   },
   getPermissions: async () => {
     const user = supabaseClient.auth.user();

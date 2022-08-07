@@ -14,14 +14,12 @@ export type FormProps = React.HTMLAttributes<HTMLDivElement> &
     ctx: FormState<FieldValues>;
   };
 
-// create context
-const FormContext = React.createContext<FormState<FieldValues>>({
+  // // create context
+  const FormContext = React.createContext<FormState<FieldValues>>({});
   
-});
-
-const Form = React.forwardRef<HTMLDivElement, FormProps>(
-  ({ children, dataTheme, className, ctx, actions, ...props }, ref): JSX.Element => {
-    const classes = twMerge('form-control', className);
+  const Form = React.forwardRef<HTMLDivElement, FormProps>(
+    ({ children, dataTheme, className, ctx, actions, ...props }, ref): JSX.Element => {
+      const classes = twMerge('form-control', className);
 
     return (
       <form
@@ -72,24 +70,6 @@ const Item = React.forwardRef<HTMLDivElement, FormItemProps>(
           </label>
         }
         {children}
-        <FormContext.Consumer>
-          {({errors}) => {
-            const err = (errors as any)[htmlFor]
-            return (
-              <div>
-                {err ?
-                  <label className="label">
-                    <span className="label-text-alt text-error">
-                      {err && err.message}
-                      {err && !err.message ? `Validation Error: ${err.type}` : ""}
-                    </span>
-                    {/* <span className="label-text-alt">Alt label</span> */}
-                  </label>
-                  : ""}
-              </div>
-            )
-          }}
-        </FormContext.Consumer >
       </div >
     );
   }
