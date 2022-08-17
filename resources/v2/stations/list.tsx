@@ -1,5 +1,5 @@
-import { IResourceComponentsProps, useTranslate } from '@pankod/refine-core';
-import React from 'react';
+import { IResourceComponentsProps, useList, useTranslate } from '@pankod/refine-core';
+import React, { useState } from 'react';
 
 import { useNavigation, useDelete } from '@pankod/refine-core';
 import { Column } from '@pankod/refine-react-table';
@@ -8,11 +8,19 @@ import { Listing } from '@/components/crud';
 import { ColumnActions, Table } from '@/components/crud/Table';
 
 import { Station } from 'types';
+import { Sheet } from '@/components/Sheet';
+import ListCard from '@/components/ListCard';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import StationCreateForm from './create.form';
+import Link from 'next/link';
+import { useModalForm } from '@pankod/refine-react-hook-form';
 
 export const StationList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { show, edit } = useNavigation();
   const { mutate } = useDelete();
+  const [createModal, setCreateModal] = useState<boolean>(false)
 
   const columns: Array<Column> = React.useMemo(
     () => [
@@ -84,18 +92,69 @@ export const StationList: React.FC<IResourceComponentsProps> = () => {
     ],
     []
   );
+  const {
+    data,
+    error,
+    isLoading,
+    refetch,
+  } = useList<Station>({
+    resource: 'stations',
+    metaData: {
+      select: "name, id, description",
+    },
+    config: {
+      // sort: [{ field: 'created_at', order: 'asc' }],
+    },
 
+  });
+
+  const createModalFormReturnValues = useModalForm({
+    refineCoreProps: { action: "create" },
+    modalProps: {
+      autoResetForm: true
+    }
+    
+  });
+  const {
+    modal: { show: showCreateModal,  },
+  } = createModalFormReturnValues;
   return (
-    <Listing
+    <Sheet
       canCreate={true}
-      createButtonProps={{
-        label: t('actions.create', 'Create')
-      }}
+      createButtonProps={
+        {
+          onClick: () => showCreateModal()
+
+        }
+      }
       pageHeaderProps={undefined}
       resource="stations"
-      title={t('stations:title', 'Stations')}
-    >
-      <Table title={t('station:title', 'stations')} columns={columns} />
-    </Listing>
+      title={t('stations:title', 'Stations')} columns={undefined} loading={false}    >
+      <StationCreateForm  {...createModalFormReturnValues} />
+      <div className=' grid grid-cols-4 gap-5'>
+
+        {data?.data.map((item) => (
+          // <Link href={`stations/${item.id}`}>
+            <div onClick={() => show('stations', item.id)} className="card hover:cursor-pointer hover:opacity-60 w-full bg-neutral shadow-xl">
+              <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+              <div className="card-body">
+                <h2 className="card-title">
+                  {item.name}
+                  {/* <div className="badge badge-secondary">NEW</div> */}
+                </h2>
+                <p>{item.description}</p>
+                {/* <div className="card-actions justify-end">
+                <div className="badge badge-outline">Fashion</div>
+                <div className="badge badge-outline">Products</div>
+              </div> */}
+              </div>
+            </div>
+          // </Link>
+
+        ))}
+      </div>
+
+      {/* <Table title={t('station:title', 'stations')} columns={columns} /> */}
+    </Sheet>
   );
 };

@@ -37,6 +37,7 @@
     "editError": "Error when editing {{resource}} (status code: {{statusCode}})",
     "importProgress": "Importing: {{processed}}/{{total}}"
   },
+  "noData": "There is no records yet.",
   "loading": "Loading",
   "tags": {
     "clone": "Clone"

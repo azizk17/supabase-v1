@@ -14,35 +14,35 @@ export const ChannelList: React.FC<IResourceComponentsProps> = () => {
   const { show, edit } = useNavigation();
   const { mutate } = useDelete();
 
-  const countriesIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
-  const { data: countries } = useMany<Country>({
-    resource: 'countries',
-    ids: countriesIds
-  });
+  // const countriesIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
+  // const { data: countries } = useMany<Country>({
+  //   resource: 'countries',
+  //   ids: countriesIds
+  // });
 
-  const credentialsIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
-  const { data: credentials } = useMany<Credential>({
-    resource: 'credentials',
-    ids: credentialsIds
-  });
+  // const credentialsIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
+  // const { data: credentials } = useMany<Credential>({
+  //   resource: 'credentials',
+  //   ids: credentialsIds
+  // });
 
-  const languagesIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
-  const { data: languages } = useMany<Language>({
-    resource: 'languages',
-    ids: languagesIds
-  });
+  // const languagesIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
+  // const { data: languages } = useMany<Language>({
+  //   resource: 'languages',
+  //   ids: languagesIds
+  // });
 
-  const stationsIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
-  const { data: stations } = useMany<Station>({
-    resource: 'stations',
-    ids: stationsIds
-  });
+  // const stationsIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
+  // const { data: stations } = useMany<Station>({
+  //   resource: 'stations',
+  //   ids: stationsIds
+  // });
 
-  const platformsIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
-  const { data: platforms } = useMany<Platform>({
-    resource: 'platforms',
-    ids: platformsIds
-  });
+  // const platformsIds = tableProps?.dataSource?.map((item) => item.id) ?? [];
+  // const { data: platforms } = useMany<Platform>({
+  //   resource: 'platforms',
+  //   ids: platformsIds
+  // });
 
   const columns: Array<Column> = React.useMemo(
     () => [

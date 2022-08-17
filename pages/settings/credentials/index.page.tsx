@@ -11,7 +11,6 @@ import React, { FC, MouseEventHandler, useRef, useState } from 'react';
 import { useNavigation, useDelete } from '@pankod/refine-core';
 import { Column } from '@pankod/refine-react-table';
 import { FiEdit, FiEye, FiTrash2, FiMoreVertical } from 'react-icons/fi';
-import { Listing } from '@/components/crud';
 import { ColumnActions, } from '@/components/crud/Table';
 
 import { Credential } from 'types';
@@ -28,33 +27,38 @@ import Link from 'next/link';
 import ListCard from '@/components/ListCard';
 import ModalActions from '@/components/ui2/Modal/ModalActions';
 import { Router, useRouter } from 'next/router';
-import ModalHeader from '@/components/ui2/Modal/ModalHeader';
-import NavLink from '@/components/NavLink';
-import CrudOnModal from '@/components/CrudOnModal';
-import Skeleton from '@/components/Skeleton';
-import AppTable from '@/components/AppTable';
-import CredentialCreate from './create';
 import CreateForm from './create.form';
-import { useDropzone } from 'react-dropzone';
+import EditForm from './edit.form';
 
-
+/** ------------- Resource Name -------------- */
 const resourceName = 'credentials';
+
 
 const CredentialList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
   const { show, edit, goBack, listUrl } = useNavigation();
-  const { mutate } = useDelete();
+  const { mutate: remove } = useDelete();
 
   const [openShow, setOpenShow] = useState(false)
+
+  let pageSize = 100
+  let currentPage = 1
   const {
     data: credentials,
     error,
-    isLoading
+    isLoading,
+    refetch,
   } = useList<Credential>({
     resource: 'credentials',
+
     config: {
-      sort: [{ field: 'created_at', order: 'asc' }]
-    }
+      sort: [{ field: 'created_at', order: 'asc' }],
+      pagination: {
+        pageSize: pageSize,
+        current: currentPage
+      }
+    },
+
   });
   const columns: Array<Column> = React.useMemo(
     () => [
@@ -163,27 +167,27 @@ const CredentialList: React.FC<IResourceComponentsProps> = () => {
     []
   );
 
-  const onClose = () => goBack()
   const { query, push } = useRouter()
 
   return (
     <SettingsLayout>
 
       <Show id={query?.id} />
-      <CreateForm />
-      <Edit />
+      {query.create && <CreateForm onUpdated={refetch} resource={resourceName} />}
+      {query.edit && <EditForm onUpdated={refetch} resource={resourceName} />}
       <Sheet
         title={t('credential:title', 'Credentials')}
         loading={isLoading}
         canCreate={true}
+        data={credentials?.data}
+        total={credentials?.total}
         createButtonProps={{
           // onClick: () => push({
           //   pathname: '/',
           //   query: {'mode': 'create'}
           // }),
           resourceNameOrRouteName: '?create=true'
-        }}
-      >
+        }} columns={undefined}      >
 
         <div className=' grid grid-cols-1 gap-2'>
 
@@ -193,25 +197,18 @@ const CredentialList: React.FC<IResourceComponentsProps> = () => {
               title={
                 <div className=' flex items-center space-x-2'>
                   <SocialIcon name={credential.platform_name} />
-                  {/* <Link href={
-                    { pathname: '/settings/credentials/[id]', query: { id: credential.id } }
-                  }> */}
-                  {/* <Show id={credential.id} isOpen={openShow} close={() => setOpenShow(false)} /> */}
-
-
                   <Link href={`?id=${credential.id}`} as={`credentials/${credential.id}`}>
-
                     <span onClick={() => setOpenShow(true)} className=' link link-hover' >@{credential.username} </span>
                   </Link>
                   {/* </Link> */}
-                  <Badge title={credential.status} color="success" variant='outline' >{credential.status}</Badge>
+                  <Badge title={credential.status} color="primary">{credential.status}</Badge>
                 </div>
               }
               actions={[
-                <Link href={`?edit=${credential.id}`} as={`credentials/edit/${credential.id}`} >
+                <Link href={`?edit=${credential.id}`} as={`credentials/${credential.id}/edit`} >
                   Edit
                 </Link>,
-                <a onClick={() => alert("remove")}>
+                <a onClick={() => remove({ id: credential.id, resource: resourceName })}>
                   Remove
                 </a>,
                 <a onClick={() => alert("disable")}>
@@ -222,6 +219,9 @@ const CredentialList: React.FC<IResourceComponentsProps> = () => {
             />
           )
           )}
+          {/* <Pagination pageSize={pageSize}
+            currentPage={currentPage}
+          /> */}
         </div>
       </Sheet>
     </SettingsLayout >
@@ -236,27 +236,20 @@ type ShowProps = {
 }
 
 const Show: FC<ShowProps> = ({ id, isOpen, onClose }) => {
-
   const { query, back } = useRouter();
-
   // const { queryResult } = useShow<Credential>();
   // const { data } = queryResult;
   // const record = data?.data;
-
   const { data, isFetching } = useOne<Credential>({
     resource: "credentials",
     id: query?.id,
-
     // queryOptions: {
     //   enabled: !!record,
     // },
   });
   return (
     <Modal open={!!query.id} onClose={back} responsive={false} closeable>
-
       <Sheet title={"Show page"} columns={undefined} loading={isFetching}>
-
-
         <div className=' grid  grid-flow-row-dense grid-cols-1 grid-rows-1 gap-5'>
           <Display title="ID" size='md' value={data?.data.id} />
           <Display title="nickname" size='md' value={data?.data.nickname} />
@@ -269,7 +262,6 @@ const Show: FC<ShowProps> = ({ id, isOpen, onClose }) => {
           <Display title="enabled" type='boolean' size='md' value={data?.data.enabled} />
           <Display title="updated_at" type='date' size='md' value={data?.data.updated_at} />
           <Display title="created_at" size='md' value={data?.data.id} />
-
         </div>
         <ModalActions>
           <button className='btn btn-sm' onClick={back}>
@@ -281,64 +273,6 @@ const Show: FC<ShowProps> = ({ id, isOpen, onClose }) => {
 
   )
 }
-
-
-type CreateProps = {};
-
-const Create: FC<CreateProps> = ({ }) => {
-  const { query, back } = useRouter();
-  const formRef = useRef()
-  return (
-    <Modal open={!!query.create} onClose={back}>
-      {/* {JSON.stringify(data)} */}
-      {query.create &&
-        <div>
-          <ModalHeader>
-            Create new Item
-          </ModalHeader>
-          <CreateForm ref={formRef} />
-          <ModalActions>
-            <button className='btn btn-sm' onClick={back}>
-              close
-            </button>
-          </ModalActions>
-
-        </div>
-      }
-    </Modal>
-  );
-}
-type EditProps = {};
-
-const Edit: FC<CreateProps> = ({ }) => {
-  const { query, back } = useRouter();
-
-  return (
-    <Modal open={!!query.edit} className="max-w-screen-md">
-      {/* {JSON.stringify(data)} */}
-      {query.edit &&
-        <div>
-          <ModalHeader>
-            Edit {query?.edit}
-          </ModalHeader>
-          <div className=' grid  grid-flow-row-dense grid-cols-2 grid-rows-2 gap-5'>
-            Lorem ipsum, dolor sit amet consectetur adipisicing
-            elit. Maxime, modi nam necessitatibus similique magnam
-            dicta illum omnis, quisquam quas ut, rem sapiente sed nihil obcaecati officiis facilis porro placeat itaque.
-
-          </div>
-          <ModalActions>
-            <button className='btn btn-sm' onClick={back}>
-              close
-            </button>
-          </ModalActions>
-
-        </div>
-      }
-    </Modal>
-  );
-}
-
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {

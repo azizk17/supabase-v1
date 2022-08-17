@@ -1,10 +1,10 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { IResourceComponentsProps, useTranslate, useSelect } from '@pankod/refine-core';
 
 import { Credential } from 'types';
 
 import { useForm } from '@pankod/refine-react-hook-form';
-import { Form, Card } from '@/components/ui2';
+import { Form, Card, Button } from '@/components/ui2';
 import Modal from '@/components/Modal'
 import { Label, InputError } from '@/components/FormHelpers';
 import { FaCheck } from 'react-icons/fa';
@@ -14,7 +14,6 @@ import { useRouter } from 'next/router';
 import { Sheet } from '@/components/Sheet';
 import { Select } from '@/components/Select';
 import { ImageInput } from '@/components/ImageInput';
-import Button from '@/components/ui2/Button';
 
 
 
@@ -26,35 +25,45 @@ import Button from '@/components/ui2/Button';
 
 
 
-export type CreateFormProps = IResourceComponentsProps & {
-    onUpdated?: any
+export type EditFormProps = IResourceComponentsProps & {
+    resource?: string
+    onUpdated?: Function
 }
-const CreateForm = forwardRef<HTMLDivElement, CreateFormProps>(
+const EditForm = forwardRef<HTMLDivElement, EditFormProps>(
     (
-        { children, onUpdated, ...props },
+        { children, resource, onUpdated, ...props },
         ref
     ): JSX.Element => {
         const t = useTranslate();
         const { query, back } = useRouter();
-
+        let id = query.edit
         const {
-            refineCore: { redirect, onFinish, formLoading, queryResult, },
+            refineCore: { redirect, onFinish, formLoading, queryResult, mutationResult },
             register,
+
             handleSubmit,
+            reset,
             resetField,
-            formState: { errors, isSubmitting },
+            formState: { errors, isDirty,
+                isSubmitting,
+                isValid },
             control,
             setValue,
             getValues,
+
+
         } = useForm<Credential>({
 
             refineCoreProps: {
                 resource: 'credentials',
-                action: 'create',
+                action: 'edit',
                 redirect: false,
-                onMutationSuccess: onUpdated
+                id: id,
+                onMutationSuccess: onUpdated,
+
             }
         });
+
 
         const { options: platforms } = useSelect({
             resource: 'platforms',
@@ -64,10 +73,11 @@ const CreateForm = forwardRef<HTMLDivElement, CreateFormProps>(
 
         return (
 
-            <Modal open={!!query.create} onClose={back}>
-                {/* {JSON.stringify(data)} */}
-                <Sheet title={t('createNew', 'Create New')}
+            <Modal open={!!query.edit} onClose={back}>
+                <Sheet title={t('edit', 'Edit')}
+
                 >
+
 
                     <form
                         onSubmit={handleSubmit(onFinish)}
@@ -78,18 +88,13 @@ const CreateForm = forwardRef<HTMLDivElement, CreateFormProps>(
                             control={control}
                             onChange={(e) => setValue('platform_name', e?.value)}
                             options={platforms} />
-
-
-
-
-
                         {/************ username ************/}
                         <div className='form-control w-full max-w-xs'>
                             <Label title={t('ResourceName:fields.username', 'username')} htmlFor="username" />
                             <input {...register('username', { required: false })}
                                 type='text'
                                 id='username'
-                                placeholder={t('ResourceName:fields.username', ' username ')}
+                                placeholder={t(`${resource}:fields.username`, ' username ')}
                                 className={`input input-bordered w-full max-w-xs ${errors?.username ? 'input-error' : ''}`}
                                 disabled={formLoading} />
                             <InputError error={errors?.username} />
@@ -227,11 +232,11 @@ const CreateForm = forwardRef<HTMLDivElement, CreateFormProps>(
                                 </label>
                             )}
                         </div>
-
                     </form>
 
 
                     <ModalActions>
+
                         <Button color='primary' disabled={
                             isSubmitting
                         } loading={isSubmitting} onClick={handleSubmit(onFinish)}>
@@ -248,4 +253,4 @@ const CreateForm = forwardRef<HTMLDivElement, CreateFormProps>(
     }
 );
 
-export default CreateForm
+export default EditForm

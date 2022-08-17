@@ -214,6 +214,7 @@ This is a Primary Key.<pk/>
   Enabled?: boolean;
 };
 export type Credential = {
+  platform_name: string;
   /**
   * Note:
 This is a Primary Key.<pk/>

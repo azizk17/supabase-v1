@@ -28,6 +28,9 @@ import { Button, ButtonProps, Card } from '@/components/ui2';
 import CardBody from './ui2/Card/CardBody';
 import CardTitle from './ui2/Card/CardTitle';
 
+
+type ActionsProps = ButtonProps & {
+} | ReactNode
 export type CreateButtonProps = ButtonProps & {
   resourceNameOrRouteName?: string;
   hideText?: boolean;
@@ -38,29 +41,38 @@ export type PageHeaderProps = {
   subtitle?: ReactNode;
   children?: ReactNode;
 };
+
 export interface ListProps {
   canCreate?: boolean;
   title?: ReactNode;
+  subtitle?: ReactNode;
   createButtonProps?: CreateButtonProps;
   pageHeaderProps?: PageHeaderProps;
   resource?: string;
   route?: string;
+  actions?: ActionsProps[]
 }
 
 type SheetProps = ListProps & {
   columns: any;
   loading: boolean;
+  data: any
+  total?: string | number
 }
 
 export const Sheet: FC<SheetProps> = ({
   canCreate,
   title,
+  subtitle,
   children,
+  data,
+  total,
   createButtonProps,
   pageHeaderProps,
   resource: resourceFromProps,
   columns,
-  loading
+  loading,
+  actions
 }) => {
   // table or list
   // title
@@ -80,15 +92,31 @@ export const Sheet: FC<SheetProps> = ({
   const resource = resourceWithRoute(resourceFromProps ?? routeResourceName);
 
 
+  const topActions = (): ActionsProps[] => {
+    let items: ActionsProps = []
+    for (let i = 0; i < actions?.length; i++) {
+      const element: ActionsProps = actions[i];
+      <Button >
+        {element?.title}
+      </Button>
+
+    }
+  }
+
+
   const createRoute = createButtonProps?.resourceNameOrRouteName
-  ? createButtonProps.resourceNameOrRouteName
+    ? createButtonProps.resourceNameOrRouteName
     : `${resource.route}/create`;
   const isCreateButtonVisible =
     canCreate ?? (resource.canCreate || createButtonProps);
+
+
+
+
   const defaultExtra = isCreateButtonVisible && (
     <Button
       endIcon={<FiPlusCircle />}
-      href={createRoute}
+      href={!createButtonProps?.onClick ? createRoute : undefined}
       // resourceNameOrRouteName={resource.route}
       data-testid="list-create-button"
       size='sm'
@@ -103,8 +131,20 @@ export const Sheet: FC<SheetProps> = ({
       {loading ? <OnLoading /> :
         <Card compact bordered={false} className=' h-full  w-full  min-h-full overflow-visible '>
           <CardBody>
-            <SheetHeader title={title} extra={defaultExtra} />
+            <SheetHeader
+              title={title}
+              subtitle={subtitle}
+              extra={defaultExtra}
+              actions={actions} />
             <div className="  min-w-full  w-full ">
+              {total == 0 &&
+                <div className="alert shadow-lg">
+                  <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info flex-shrink-0 w-9 h-9"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>{translate('noData')}</span>
+                  </div>
+                </div>
+              }
               {/* <h2 className="card-title">Shoes!</h2> */}
               <div className=" overflow-visible  ">
                 {/* <ListingTable br={columns} /> */}
@@ -119,14 +159,29 @@ export const Sheet: FC<SheetProps> = ({
   );
 };
 
-const SheetHeader: FC<{ title: ReactNode, extra: ReactNode }> = ({ title, extra }) => {
+type HeaderProps = {
+  title: ReactNode;
+  subtitle?: ReactNode;
+  extra: ReactNode;
+  actions?: ReactNode[]
+};
+
+const SheetHeader: FC<HeaderProps> = ({ title, subtitle, extra, actions }) => {
   return (
     <div className='flex justify-between items-center'>
       <CardTitle>
-        {title}
+        <div className='flex flex-col justify-start items-center'>
+          {title}
+          <div className=' text-sm '>
+            {subtitle}
+          </div>
+        </div>
       </CardTitle>
-      <div>
+      <div className=' flex items-center justify-start space-x-1'>
         {extra}
+        {actions?.map((i) => (
+          i
+        ))}
       </div>
     </div>
   )

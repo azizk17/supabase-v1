@@ -34,6 +34,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       children,
       href,
+      title,
       shape,
       size,
       variant,
@@ -49,6 +50,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       dataTheme,
       className,
       style,
+
       ...props
     },
     ref
@@ -72,7 +74,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (href) {
       return (
-        <Link  href={href}>
+        <Link href={href}>
           <a className={classes} style={style}>
             {startIcon && startIcon}
             {children}
@@ -92,6 +94,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         >
           {startIcon && !loading && startIcon}
           {children}
+          {title}
           {endIcon && endIcon}
         </button>
       );

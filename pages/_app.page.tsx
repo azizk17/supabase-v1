@@ -13,7 +13,7 @@ import { appWithTranslation, useTranslation } from 'next-i18next';
 import { ThemeProvider } from 'next-themes';
 import { DashboardPage } from 'pages/dashboard';
 import { SignIn } from 'pages/signin.page';
-import { StationCreate, StationList } from 'resources/v2/stations';
+import { StationCreate, StationList, StationShow } from 'resources/v2/stations';
 import {
   CountryCreate,
   CountryEdit,
@@ -24,6 +24,8 @@ import { FiGlobe, FiMapPin } from 'react-icons/fi';
 import { PlatformCreate, PlatformList } from 'resources/v2/platforms';
 import { CustomErrorComponent } from '@/components/errors';
 import SettingsPage from './settings/index.page';
+import CredentialList from './settings/credentials/index.page';
+import { ChannelEdit, ChannelList, ChannelShow } from 'resources/v2/channels';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { t, i18n } = useTranslation('common');
@@ -56,7 +58,12 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           {
             name: 'stations',
             list: StationList,
-            create: StationCreate
+            show: StationShow
+          },
+          {
+            name: 'channels',
+            show: ChannelShow,
+            edit: ChannelEdit,
           },
 
           {
@@ -79,8 +86,16 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             options: {
               route: "settings"
             }
+          },
 
-
+          // Settings
+          {
+            name: 'cre',
+            parentName: 'Settings',
+            list: CredentialList,
+            options: {
+              route: 'cre'
+            }
           }
         ]}
       >

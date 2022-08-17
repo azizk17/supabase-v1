@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { IResourceComponentsProps, useTranslate } from '@pankod/refine-core';
+import { IResourceComponentsProps, useSelect, useTranslate } from '@pankod/refine-core';
 
 import { Channel } from 'types';
 
 import { useForm } from '@pankod/refine-react-hook-form';
 import { Form, Card } from '@/components/ui';
+import { Sheet } from '@/components/Sheet';
+import FormSection from '@/components/FormSection';
+import { Platform } from 'types/a';
+import { Select } from '@/components/Select';
+import { ImageInput } from '@/components/ImageInput';
 
 export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -13,159 +18,191 @@ export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
     register,
     handleSubmit,
     resetField,
+    setValue,
+    control,
     formState: { errors }
   } = useForm();
 
+  // Selects 
+  const { options: platforms } = useSelect<Platform>({
+    resource: 'platforms',
+    optionLabel: 'name',
+    optionValue: 'name'
+  })
+  const { options: countries } = useSelect<Platform>({
+    resource: 'countries',
+    optionLabel: 'name',
+    optionValue: 'name'
+  })
+  const { options: languages } = useSelect<Platform>({
+    resource: 'languages',
+    optionLabel: 'name',
+    optionValue: 'name'
+  })
   const recordData = queryResult?.data?.data;
   return (
-    <Card title={t('pages.edit', 'Edit')}>
-      <Form
+    <Sheet title={t('pages.edit', 'Edit')}>
+      <form
         onSubmit={handleSubmit(onFinish)}
-        errors={errors}
-        loading={formLoading}
       >
-        <Form.Item label={t('channel:fields.id', 'Id')}>
-          <Form.Input
-            {...register('id', { required: true })}
-            type="text"
-            id="id"
-            placeholder={t('channel:fields.id', 'Id')}
-          />
-        </Form.Item>
+        <FormSection
+          title="Info"
 
-        <Form.Item label={t('channel:fields.name', 'Name')}>
-          <Form.Input
-            {...register('name', { required: false })}
-            type="text"
-            id="name"
-            placeholder={t('channel:fields.name', 'Name')}
-          />
-        </Form.Item>
+        >
 
-        <Form.Item label={t('channel:fields.apikey', 'Apikey')}>
-          <Form.Input
-            {...register('apikey', { required: false })}
-            type="text"
-            id="apikey"
-            placeholder={t('channel:fields.apikey', 'Apikey')}
-          />
-        </Form.Item>
 
-        <Form.Item label={t('channel:fields.countryId', 'Country id')}>
-          <Form.Input
-            {...register('country_id', { required: true })}
-            type="text"
-            id="country_id"
-            placeholder={t('channel:fields.countryId', 'Country id')}
-          />
-        </Form.Item>
+          {/************ Name ************/}
+          <div className='form-control w-full'>
+            <label className='label'>
+              <span className='label-text'>
+                {t('ResourceName:fields.name', 'Name')}
+              </span>
+            </label>
+            <input {...register('name', { required: false })}
+              type='text'
+              id='name'
+              placeholder={t('ResourceName:fields.name', 'Name')}
+              className={`input input-bordered w-full ${errors?.name ? 'input-error' : ''}`}
+              disabled={formLoading} />
+            {errors?.name && (
+              <label className='label text-error'>
+                <span className='label-text-alt'>{errors?.name}</span>
+              </label>
+            )}
+          </div>
+          {/************ Description ************/}
+          <div className='form-control w-full'>
+            <label className='label'>
+              <span className='label-text'>
+                {t('ResourceName:fields.description', 'Description')}
+              </span>
+            </label>
+            <input {...register('description', { required: false })}
+              type='text'
+              id='description'
+              placeholder={t('ResourceName:fields.description', 'Description')}
+              className={`input input-bordered w-full ${errors?.description ? 'input-error' : ''}`}
+              disabled={formLoading} />
+            {errors?.description && (
+              <label className='label text-error'>
+                <span className='label-text-alt'>{errors?.description}</span>
+              </label>
+            )}
+          </div>
+        </FormSection>
+        <div className="divider"></div>
 
-        <Form.Item label={t('channel:fields.credentialId', 'Credential id')}>
-          <Form.Input
-            {...register('credential_id', { required: true })}
-            type="text"
-            id="credential_id"
-            placeholder={t('channel:fields.credentialId', 'Credential id')}
-          />
-        </Form.Item>
+        <FormSection title={"Geolocation"}>
+          {/************ Country ************/}
+          <div className='form-control w-full'>
+            <label className='label'>
+              <span className='label-text'>
+                {t('ResourceName:fields.country', 'Country')}
+              </span>
+            </label>
+            <Select
+              defaultValue={'sa'}
+              control={control}
+              onChange={(e) => setValue('country_id', e?.value)}
+              options={countries} />
 
-        <Form.Item label={t('channel:fields.languageId', 'Language id')}>
-          <Form.Input
-            {...register('language_id', { required: true })}
-            type="text"
-            id="language_id"
-            placeholder={t('channel:fields.languageId', 'Language id')}
-          />
-        </Form.Item>
+            {errors?.country && (
+              <label className='label text-error'>
+                <span className='label-text-alt'>{errors?.country}</span>
+              </label>
+            )}
+          </div>
+          {/************ Language ************/}
+          <div className='form-control w-full'>
+            <label className='label'>
+              <span className='label-text'>
+                {t('ResourceName:fields.language', 'Language')}
+              </span>
+            </label>
+            <Select
+              defaultValue={'ar'}
+              control={control}
+              onChange={(e) => setValue('language_id', e?.value)}
+              options={languages} />
 
-        <Form.Item label={t('channel:fields.metadata', 'Metadata')}>
-          <Form.Input
-            {...register('metadata', { required: false })}
-            type="text"
-            id="metadata"
-            placeholder={t('channel:fields.metadata', 'Metadata')}
-          />
-        </Form.Item>
+            {errors?.language && (
+              <label className='label text-error'>
+                <span className='label-text-alt'>{errors?.language}</span>
+              </label>
+            )}
+          </div>
+          {/************ Platform ************/}
+          <div className='form-control w-full '>
+            <label className='label'>
+              <span className='label-text'>
+                {t('ResourceName:fields.platform', 'Platform')}
+              </span>
+            </label>
+            <Select
+              defaultValue={'tiktok'}
+              control={control}
+              onChange={(e) => setValue('platform_name', e?.value)}
+              options={platforms} />
 
-        <Form.Item label={t('channel:fields.orginalUrl', 'Orginal url')}>
-          <Form.Input
-            {...register('orginal_url', { required: false })}
-            type="text"
-            id="orginal_url"
-            placeholder={t('channel:fields.orginalUrl', 'Orginal url')}
-          />
-        </Form.Item>
+            {errors?.platform && (
+              <label className='label text-error'>
+                <span className='label-text-alt'>{errors?.platform}</span>
+              </label>
+            )}
+          </div>
+        </FormSection>
+        <div className=' divider'></div>
+        <FormSection title={"Media"}>
 
-        <Form.Item label={t('channel:fields.stationId', 'Station id')}>
-          <Form.Input
-            {...register('station_id', { required: true })}
-            type="text"
-            id="station_id"
-            placeholder={t('channel:fields.stationId', 'Station id')}
-          />
-        </Form.Item>
+          <div className=' grid grid-cols-5 gap-5'>
 
-        <Form.Item label={t('channel:fields.platformName', 'Platform name')}>
-          <Form.Input
-            {...register('platform_name', { required: true })}
-            type="text"
-            id="platform_name"
-            placeholder={t('channel:fields.platformName', 'Platform name')}
-          />
-        </Form.Item>
 
-        <Form.Item label={t('channel:fields.thumb', 'Thumb')}>
-          <Form.Input
-            {...register('thumb', { required: false })}
-            type="text"
-            id="thumb"
-            placeholder={t('channel:fields.thumb', 'Thumb')}
-          />
-        </Form.Item>
+            {/************ Logo ************/}
+            <div className='form-control w-full'>
+              <label className='label'>
+                <span className='label-text'>
+                  {t('ResourceName:fields.logo', 'Logo')}
+                </span>
+              </label>
+              <ImageInput
+                {...register('logo')}
+                name="logo"
+                bucket='app'
+                disabled={formLoading}
+                onChange={(val: string) => setValue('logo', val)}
+              />
+              {errors?.logo && (
+                <label className='label text-error'>
+                  <span className='label-text-alt'>{errors?.logo}</span>
+                </label>
+              )}
+            </div>
+            {/************ Watermark ************/}
+            <div className='form-control w-full'>
+              <label className='label'>
+                <span className='label-text'>
+                  {t('ResourceName:fields.watermark', 'Watermark')}
+                </span>
+              </label>
+              <ImageInput
+                {...register('watermark')}
+                name="watermark"
+                bucket='app'
+                disabled={formLoading}
+                onChange={(val: string) => setValue('watermark', val)}
+              />
 
-        <Form.Item label={t('channel:fields.description', 'Description')}>
-          <Form.Input
-            {...register('description', { required: false })}
-            type="text"
-            id="description"
-            placeholder={t('channel:fields.description', 'Description')}
-          />
-        </Form.Item>
+              {errors?.watermark && (
+                <label className='label text-error'>
+                  <span className='label-text-alt'>{errors?.watermark}</span>
+                </label>
+              )}
+            </div>
+          </div>
+        </FormSection>
 
-        <Form.Item label={t('channel:fields.logo', 'Logo')}>
-          <Form.Input
-            {...register('logo', { required: false })}
-            type="text"
-            id="logo"
-            placeholder={t('channel:fields.logo', 'Logo')}
-          />
-        </Form.Item>
+      </form>
 
-        <Form.Item label={t('channel:fields.watermark', 'Watermark')}>
-          <Form.Input
-            {...register('watermark', { required: false })}
-            type="text"
-            id="watermark"
-            placeholder={t('channel:fields.watermark', 'Watermark')}
-          />
-        </Form.Item>
-
-        <Form.Item label={t('channel:fields.createdAt', 'Created at')}>
-          <DatePicker
-            {...register('created_at', { required: false })}
-            id="created_at"
-            placeholder={t('channel:fields.createdAt', 'Created at')}
-          />
-        </Form.Item>
-
-        <Form.Item label={t('channel:fields.updatedAt', 'Updated at')}>
-          <DatePicker
-            {...register('updated_at', { required: false })}
-            id="updated_at"
-            placeholder={t('channel:fields.updatedAt', 'Updated at')}
-          />
-        </Form.Item>
-      </Form>
-    </Card>
+    </Sheet>
   );
 };
