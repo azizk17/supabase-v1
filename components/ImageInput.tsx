@@ -1,6 +1,6 @@
 import { useTranslate, useApiUrl } from '@pankod/refine-core';
 import { Controller, FieldError } from '@pankod/refine-react-hook-form'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FieldErrors, Merge } from 'react-hook-form'
 import { default as ReactSelect, StylesConfig } from 'react-select';
 import axios from 'axios'
@@ -11,6 +11,8 @@ import { supabaseClient } from '@/utils/supabase-client'
 import { FaCross, FaUser } from 'react-icons/fa';
 import xCircle from '@iconify/icons-ph/x-circle';
 import { Icon } from '@iconify/react';
+import { Image } from './Image'
+
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -55,18 +57,23 @@ export const ImageInput = React.forwardRef<HTMLLabelElement, ImageInputProps>(
         const [uploadingError, setUploadingError] = useState<any | null>()
 
 
-
+        const fileInputName = "fileInput-" + Math.random().toString(36).substring(2, 7)
         filename = filename ?? uuidv4()
         if (value) {
             setImgPreview(value)
         }
 
 
+        useEffect(() => {
+            onChange(imageUrl)
+            console.log("Image URL on child", imageUrl);
+
+        }, [imageUrl])
 
         const onSubmitFile = async () => {
             setIsUploading(true);
             const inputFile = document.getElementById(
-                "fileInput",
+                fileInputName,
             ) as HTMLInputElement;
 
             const _file = inputFile?.files?.item(0) as File
@@ -90,7 +97,7 @@ export const ImageInput = React.forwardRef<HTMLLabelElement, ImageInputProps>(
                 console.log("errror: ", error);
 
             }
-            setImageUrl(data);
+            setImageUrl(data?.Key);
             setIsUploading(false);
         };
 
@@ -101,54 +108,105 @@ export const ImageInput = React.forwardRef<HTMLLabelElement, ImageInputProps>(
             setImageUrl('')
             setUploadingError(null)
             const inputFile = document.getElementById(
-                "fileInput",
+                fileInputName,
             ) as HTMLInputElement;
 
-            inputFile.value = null
+            inputFile.value = ""
 
         }
 
-        return (
-            <div className=' flex flex-col items-start justify-center '>
-                <div
-                    className=' avatar cursor-default bg-base-300 flex items-center justify-center bordered rounded-lg w-24 h-24'>
-                    {isUploading &&
-                        <div className=' bg-base-300 bg-opacity-80 absolute inset-0 h-full w-full flex items-center justify-center rounded-lg'>
-                            <OnUploadingIcon />
-                        </div>
-                    }
+        let dispalyImageSrc = imgPreview ? URL.createObjectURL(imgPreview) : ''
 
-                    {!imgPreview && <label htmlFor='fileInput' className=' flex items-center justify-center  h-full w-full hover:cursor-pointer hover:opacity-60'>
+        return (
+            <div className={`card card-compact ${imgPreview ? "image-full" : ''} bg-base-100 shadow-xl max-w-xs max-h-32 h-24 w-32 group hover:cursor-pointer`}>
+
+                <div className=' flex items-center justify-center text-center h-full w-full  '>
+
+                    {!imgPreview && <label htmlFor={fileInputName} className="  flex items-center justify-center h-full w-full group-hover:cursor-pointer group-hover:opacity-50" >
                         <ImageIcon />
                     </label>}
-
-
-                    {uploadingError && <div className=' absolute flex h-full w-full bg-slate-700 bg-opacity-80 items-center justify-center inset-0'> <Icon width={90} height={90} icon={xCircle} /></div>}
-
-                    {imgPreview && <div className=' '>
-                        <img className=' rounded-lg' src={URL.createObjectURL(imgPreview)} />
-
-                        <div className=' absolute z-10 inset-0 flex items-center justify-between space-x-2  p-0.5'>
-                            <button type='button' onClick={removeImage} className=' btn btn-sm btn-circle  '>
-                                <RemoveIcon />
-                            </button>
-                            <label htmlFor="fileInput" className=' btn btn-sm btn-circle '>
-                                <EditIcon />
-                            </label>
-                        </div>
-                    </div>}
-                    <input disabled={!!isUploading} hidden id="fileInput" type="file" onChange={onSubmitFile} />
-                    <input
-                        type="hidden"
-                        {...props}
-                    />
-
                 </div>
 
-                {uploadingError && <p className='p-1 text-error'>{uploadingError?.message}</p>}
+                {dispalyImageSrc && (
+                    <>
+                        <Image src={dispalyImageSrc} />
+                        <div className=' card-body items-center text-center'>
+                            {isUploading &&
+                                <div className='transition duration-150 ease-in-out '>
+                                    <OnUploadingIcon />
+                                </div>
+                            }
+                            <div className=' card-actions justify-center transition duration-150 ease-in-out'>
+                                <button type='button' onClick={removeImage} className=' btn btn-sm btn-circle btn-outline  '>
+                                    <RemoveIcon />
+                                </button>
+                                <label htmlFor={fileInputName} className=' btn btn-sm btn-circle  btn-outline'>
+                                    <EditIcon />
+                                </label>
+                            </div>
+                            {uploadingError &&
+                                <div className="flex items-center justify-start space-x-1 tooltip  tooltip-error" data-tip={uploadingError?.message}>
+                                    <Icon className=" text-error" width={28} height={28} icon={xCircle} />
 
+                                    <p className='p-1 text-error'> {uploadingError?.message}</p>
+                                </div>
+                            }
+                        </div>
+                    </>
+                )
+                }
+
+                <input disabled={!!isUploading} hidden id={fileInputName} type="file" onChange={onSubmitFile} />
+                <input
+                    type="hidden"
+                    {...props}
+                />
 
             </div>
+            // <div className=' flex flex-col items-start justify-center '>
+            //     <div
+            //         className=' avatar cursor-default bg-base-300 flex items-center justify-center bordered rounded-lg w-24 h-24'>
+            //         {isUploading &&
+            //             <div className=' bg-base-300 bg-opacity-80 absolute inset-0 h-full w-full flex items-center justify-center rounded-lg'>
+            //                 <OnUploadingIcon />
+            //             </div>
+            //         }
+
+            //         {!imgPreview && <label htmlFor={fileInputName} className=' flex items-center justify-center  h-full w-full hover:cursor-pointer hover:opacity-60'>
+            //             <ImageIcon />
+            //         </label>}
+
+
+            //         {uploadingError && 
+            // <div className=' absolute flex h-full w-full
+            //  bg-slate-700 bg-opacity-80 items-center justify-center inset-0'>
+            //      <Icon width={90} height={90} icon={xCircle} />
+            //      </div>}
+
+            //         {imgPreview && <div className=' '>
+            //             <img className=' rounded-lg' src={URL.createObjectURL(imgPreview)} />
+
+            //             <div className=' absolute z-10 inset-0 flex items-center justify-between space-x-2  p-0.5'>
+            //                 <button type='button' onClick={removeImage} className=' btn btn-sm btn-circle  '>
+            //                     <RemoveIcon />
+            //                 </button>
+            //                 <label htmlFor={fileInputName} className=' btn btn-sm btn-circle '>
+            //                     <EditIcon />
+            //                 </label>
+            //             </div>
+            //         </div>}
+            //         <input disabled={!!isUploading} hidden id={fileInputName} type="file" onChange={onSubmitFile} />
+            //         <input
+            //             type="hidden"
+            //             {...props}
+            //         />
+
+            //     </div>
+
+            //     {uploadingError && <p className='p-1 text-error'>{uploadingError?.message}</p>}
+
+
+            // </div>
         )
     }
 )
@@ -156,7 +214,7 @@ export const ImageInput = React.forwardRef<HTMLLabelElement, ImageInputProps>(
 
 
 
-const OnUploadingIcon: { img: string, progress: boolean } = ({ img, progress }): JSX.Element =>
+const OnUploadingIcon: { img?: string, progress?: boolean } = ({ img, progress }): JSX.Element =>
 (
     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" className=' h-8 w-8' preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0" /></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0" /><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12" /></path></g></svg>
 )

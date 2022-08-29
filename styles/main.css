@@ -56,7 +56,7 @@ a {
   /* .input-select-container {
   } */
   .input-select-container .input-select__control {
-    @apply input select-bordered flex text-base-content w-full;
+    @apply input p-0 select-bordered flex text-base-content w-full;
   }
 
   .input-select-container .input-select__control--is-focused {
@@ -64,28 +64,28 @@ a {
   }
 
   .input-select-container .input-select__menu {
-    @apply menu bg-base-100 text-base-content;
+    @apply  bg-base-100 text-base-content w-52 max-w-sm;
   }
 
   .input-select-container .input-select__option {
-    @apply menu bg-base-100 hover:cursor-pointer hover:bg-base-200;
+    @apply  text-base bg-base-100 hover:cursor-pointer hover:bg-base-200 w-full;
   }
 
   .input-select-container .input-select__option--is-focused {
-    @apply  menu bg-base-300 w-full flex;
+    @apply   bg-base-300 w-full flex;
   }
   .input-select-container .input-select__option--is-selected {
     @apply font-semibold text-primary;
   }
 
   .input-select-container .input-select__indicator-separator {
-    @apply bg-base-content;
+    @apply  opacity-20 ;
   }
 
   .input-select-container .input-select__input-container,
   .input-select-container .input-select__placeholder,
   .input-select-container .input-select__single-value {
-    @apply   text-base-content    ;
+    @apply   text-base-content  w-full   ;
   }
   .input-select-container svg {
     @apply fill-current text-base-content

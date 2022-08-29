@@ -63,9 +63,9 @@ export const StationShow: React.FC<IResourceComponentsProps> = () => {
               <h5 className="text-xl font-bold leading-none ">
                 Channles
               </h5>
-              {/* <a href="#" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                View all
-              </a> */}
+              <a href="#" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                {t('Add new', 'Add new')}
+              </a>
             </div>
             <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
               {record?.channels.map((item) => (

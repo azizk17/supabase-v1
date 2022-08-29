@@ -10,6 +10,7 @@ import eyeSlashLight from '@iconify/icons-ph/eye-slash-light';
 import CopyToClipboard from './CopyToClipboard';
 import Link from 'next/link';
 import { useTranslate } from '@pankod/refine-core';
+import { Image } from './Image'
 
 const DataDispaly = () => {
   return <div>DataDispaly</div>;
@@ -31,7 +32,7 @@ interface DisplayProps {
 function _renderEle(type: string, value: any) {
 
   // console.log(`Type: ${type} value: ${value} typeOf: ${typeof(value)}`);
-  
+
   if (!value) return value
   switch (type) {
     case 'text':
@@ -46,6 +47,9 @@ function _renderEle(type: string, value: any) {
       );
     case 'date':
       return MyDate(value);
+    case 'image':
+
+      return <Image zoom={false} src={value} />;
     case 'link':
       return value
       return <DataLink {...value} />;
@@ -118,7 +122,7 @@ const Text = (value: string) => {
 
 const DataLink = (value: string) => {
   const t = useTranslate();
-  console.log("Value", typeof(value));
+  console.log("Value", typeof (value));
   // !! value type must fix
   const link = value?.value.charAt(0) === '/' ? <Link href={value}>
     {t('common.clickHere')}
@@ -131,12 +135,21 @@ const DataLink = (value: string) => {
 
 type ImgProps = {
   size?: string
+  src: string
 }
-const DataImage = ({ size = "md" }: ImgProps): JSX.Element => {
+const DataImage = ({ size = "md", src }: ImgProps): JSX.Element => {
+
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   return (
-    <div></div>
+    <div>
+      <Zoom>
+
+      <Image  src={src} />
+      </Zoom>
+    </div>
   )
 }
+
 
 
 

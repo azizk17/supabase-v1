@@ -10,6 +10,7 @@ import FormSection from '@/components/FormSection';
 import { Platform } from 'types/a';
 import { Select } from '@/components/Select';
 import { ImageInput } from '@/components/ImageInput';
+import FileInput from '@/components/FileInput';
 
 export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -20,6 +21,7 @@ export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
     resetField,
     setValue,
     control,
+    getValues,
     formState: { errors }
   } = useForm();
 
@@ -152,7 +154,10 @@ export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
           </div>
         </FormSection>
         <div className=' divider'></div>
-        <FormSection title={"Media"}>
+        <FormSection title={"Media"} actions={[
+          <button onClick={() => handleSubmit(onFinish)} className='btn btn-primary'>Save</button>,
+          <button type='button' onClick={() => console.log("Values: ", getValues())} className='btn btn-outline'>Values</button>
+        ]}>
 
           <div className=' grid grid-cols-5 gap-5'>
 
@@ -177,6 +182,12 @@ export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
                 </label>
               )}
             </div>
+            <FileInput
+                        accept="image/png, image/jpg, image/jpeg, image/gif"
+                        name="file alt text"
+                        label="File Upload"
+                        type="avatar"
+                    />
             {/************ Watermark ************/}
             <div className='form-control w-full'>
               <label className='label'>
@@ -189,6 +200,7 @@ export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
                 name="watermark"
                 bucket='app'
                 disabled={formLoading}
+
                 onChange={(val: string) => setValue('watermark', val)}
               />
 
@@ -199,7 +211,10 @@ export const ChannelEdit: React.FC<IResourceComponentsProps> = () => {
               )}
             </div>
           </div>
+
+
         </FormSection>
+
 
       </form>
 

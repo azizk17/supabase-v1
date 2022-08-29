@@ -1,4 +1,5 @@
 import 'styles/main.css';
+import 'styles/image-zoom.css';
 import 'styles/chrome-bug.css';
 import React from 'react';
 import { AppProps } from 'next/app';
@@ -26,6 +27,7 @@ import { CustomErrorComponent } from '@/components/errors';
 import SettingsPage from './settings/index.page';
 import CredentialList from './settings/credentials/index.page';
 import { ChannelEdit, ChannelList, ChannelShow } from 'resources/v2/channels';
+import { VideoShow } from 'resources/v2/videos';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { t, i18n } = useTranslation('common');
@@ -74,12 +76,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             create: CountryCreate,
             show: CountryShow
           },
-          {
-            name: 'platforms',
-            list: PlatformList,
-            create: PlatformCreate,
-            icon: <FiGlobe />
-          },
+         
           {
             name: "Settings",
             list: SettingsPage,
@@ -87,7 +84,10 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
               route: "settings"
             }
           },
-
+          {
+            name: "videos",
+            show: VideoShow,
+          },
           // Settings
           {
             name: 'cre',

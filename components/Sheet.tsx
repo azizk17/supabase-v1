@@ -40,6 +40,7 @@ export type PageHeaderProps = {
   title: ReactNode;
   subtitle?: ReactNode;
   children?: ReactNode;
+
 };
 
 export interface ListProps {
@@ -51,6 +52,7 @@ export interface ListProps {
   resource?: string;
   route?: string;
   actions?: ActionsProps[]
+
 }
 
 type SheetProps = ListProps & {
@@ -58,6 +60,7 @@ type SheetProps = ListProps & {
   loading: boolean;
   data: any
   total?: string | number
+  color?: string
 }
 
 export const Sheet: FC<SheetProps> = ({
@@ -72,7 +75,8 @@ export const Sheet: FC<SheetProps> = ({
   resource: resourceFromProps,
   columns,
   loading,
-  actions
+  actions,
+  color,
 }) => {
   // table or list
   // title
@@ -129,7 +133,10 @@ export const Sheet: FC<SheetProps> = ({
   return (
     <div className='p-2'>
       {loading ? <OnLoading /> :
-        <Card compact bordered={false} className=' h-full  w-full  min-h-full overflow-visible '>
+        <Card 
+        compact
+         bordered={false} 
+        className={`h-full  w-full  min-h-full overflow-visible ${color}` }>
           <CardBody>
             <SheetHeader
               title={title}

@@ -1,3 +1,4 @@
+import { actions } from '@pankod/refine-react-table'
 import React, { FC, ReactNode } from 'react'
 
 type FormSectionProps = {
@@ -5,7 +6,7 @@ type FormSectionProps = {
     actions?: ReactNode[]
     children: ReactNode
 }
-const FormSection: FC<FormSectionProps> = ({ title, children }) => {
+const FormSection: FC<FormSectionProps> = ({ title, children, actions }) => {
     return (
         <div>
 
@@ -22,9 +23,12 @@ const FormSection: FC<FormSectionProps> = ({ title, children }) => {
                     <div>
                         {children}
                     </div>
-                    <div>
-                        actions
-                    </div>
+                    {actions &&
+                        <div className='pt-4 flex space-x-3 items-center justify-start'>
+                            <div className=' divider'></div>
+                            {actions.map((action: ReactNode) => action)}
+                        </div>
+                    }
                 </div>
             </div>
         </div>
