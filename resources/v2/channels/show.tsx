@@ -23,6 +23,8 @@ import { useRouter } from 'next/router';
 import { Controller } from '@pankod/refine-react-hook-form';
 import { default as ReactSelect, StylesConfig, components, InputProps, Options } from 'react-select';
 import { FC, useEffect, useState } from 'react';
+import Modal from '@/components/Modal';
+import SocialIcon from '@/components/SocialIcon';
 
 export const ChannelShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -87,24 +89,7 @@ export const ChannelShow: React.FC<IResourceComponentsProps> = () => {
     id: record?.station_id,
   });
 
-  const videosQueryResult = useList<Video>({
-    resource: "videos",
-    config: {
-      filters: [
-        {
-          field: 'channel_id',
-          operator: 'eq',
-          value: record?.id
-        }
-      ]
-    }
-  });
 
-  const { data: videos, isLoading: isVideosLoading } = videosQueryResult
-  const getVideoSrc = (url: string) => {
-    const { publicURL } = supabaseClient.storage.from('videos').getPublicUrl(url)
-    return publicURL
-  }
 
   return (
     <Sheet
@@ -127,59 +112,11 @@ export const ChannelShow: React.FC<IResourceComponentsProps> = () => {
       {/* <JsonTree data={queryResult} /> */}
 
       <div className=' w-full flex items-center justify-center'>
-        <Head />
+        <Head channel={record}  />
       </div>
       <div className=' grid grid-cols-2 gap-5'>
 
-        <Sheet title={
-          <div className="tabs tabs-boxed">
-            <a className="tab">Videos</a>
-            <a className="tab tab-active">Shorts 2</a>
-            <a className="tab">Tab 3</a>
-          </div>
-        }
-        color="bg-base-300"
-        
-        >
-
-
-          <div className="flow-root">
-            <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-              {videos?.data.map((video: Video) => (
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 max-w-[20%]  p-0.5 bg-base-300 rounded-lg card-bordered	">
-                      <figure>
-                        <video className='  object-fill max-h-36 min-h-12 max-w-full rounded-lg '  >
-                          <source src={getVideoSrc(video?.url)} type='video/mp4'
-                            poster="asd"
-                          />
-                        </video>
-                      </figure>
-
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <Link href={showUrl('videos', video.id)} >
-
-                        <p className=" link link-hover text-sm font-medium text-gray-900 truncate dark:text-white">
-                          {video.title}
-                        </p>
-                      </Link>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        {video?.description}
-                      </p>
-                    </div>
-                    <div className="badge  badge-primary badge-outline">
-                      {video?.status}
-                    </div>
-                  </div>
-                </li>
-
-
-              ))}
-            </ul>
-          </div>
-        </Sheet>
+        <Videos />
         <Sheet title={
 
           <div className="tabs tabs-boxed bg-">
@@ -226,6 +163,114 @@ export const ChannelShow: React.FC<IResourceComponentsProps> = () => {
 };
 
 
+
+
+const Videos: FC<{}> = ({ }) => {
+
+
+  const t = useTranslate();
+  const { edit, showUrl } = useNavigation()
+  const router = useRouter()
+  const { query } = router
+
+  const [ActiveTab, setActiveTab] = useState<string>()
+  const videosQueryResult = useList<Video>({
+    resource: "videos",
+    config: {
+      filters: [
+        {
+          field: 'channel_id',
+          operator: 'eq',
+          value: query?.id
+        }
+      ]
+    }
+  });
+
+
+
+
+  const { data, isLoading } = videosQueryResult
+  const getVideoSrc = (url: string) => {
+    const { publicURL } = supabaseClient.storage.from('videos').getPublicUrl(url)
+    return publicURL
+  }
+
+  const [videoShow, setVideoShow] = useState<boolean>(false)
+  const { queryResult, showId, setShowId } = useShow<Video>({
+    resource: 'videos',
+    metaData: {
+      fields: [
+        'id',
+        'title',
+      ]
+    }
+  });
+  const { data: video, isFetching: isVideoFetching } = queryResult;
+  const record = video?.data;
+
+
+  return (
+    <Sheet title={
+      <div className="tabs tabs-boxed">
+        <a className={`tab ${ActiveTab === 'videos' ? 'tab-active' : ''}`} onClick={() => setActiveTab('videos')}>Videos</a>
+        <a className={`tab ${ActiveTab === 'shorts' ? 'tab-active' : ''}`} onClick={() => setActiveTab('shorts')}>Shorts</a>
+        <a className={`tab ${ActiveTab === 'stories' ? 'tab-active' : ''}`} onClick={() => setActiveTab('stories')}>Stories</a>
+      </div>
+    }
+      color="bg-base-300"
+
+    >
+      <JsonTree data={data} />
+      <VideoShow
+        open={videoShow}
+        onClose={() => setVideoShow(false)}
+        video={record}
+
+        isFetching={isVideoFetching}
+      />
+      <div className="flow-root">
+        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+          {data?.data.map((video: Video) => (
+            <li className="py-3 sm:py-4">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 max-w-[20%]  p-0.5 bg-base-300 rounded-lg card-bordered	">
+                  <figure>
+                    <video className='  object-fill max-h-36 min-h-12 max-w-full rounded-lg '  >
+                      <source src={getVideoSrc(video?.url)} type='video/mp4'
+                        poster="asd"
+                      />
+                    </video>
+                  </figure>
+
+                </div>
+                <div className="flex-1 min-w-0">
+
+                  <p onClick={() => {
+                    setShowId(video.id)
+                    setVideoShow(true)
+                  }} className=" link link-hover text-sm font-medium text-gray-900 truncate dark:text-white">
+                    {video.title}
+                  </p>
+                  <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                    {video?.description}
+                  </p>
+                </div>
+                <div className="badge  badge-primary badge-outline">
+                  {video?.status}
+                </div>
+              </div>
+            </li>
+
+
+          ))}
+        </ul>
+      </div>
+    </Sheet>
+  )
+}
+
+
 const PlatformSelect: FC<{ onChange: Function, loading: boolean, channels: Channel[] }> = ({
   loading, channels, onChange
 }) => {
@@ -268,7 +313,108 @@ const PlatformSelect: FC<{ onChange: Function, loading: boolean, channels: Chann
   )
 }
 
-const Head = () => {
+
+const VideoShow = ({ video, open, onClose, isFetching }) => {
+  const getVideoSrc = (url: string) => {
+    const { publicURL } = supabaseClient.storage.from('videos').getPublicUrl(url)
+    return publicURL
+  }
+  return (
+    <Modal open={open} onClose={onClose} responsive={true} closeable size='w-11/12 max-w-5xl'>
+
+      <div className=' grid grid-cols-1 gap-3'>
+        <div>
+          <figure>
+            <video key={video?.url} className='  object-fill  w-full' controls  >
+              <source src={getVideoSrc(video?.url)} type='video/mp4'
+                poster="asd"
+              />
+            </video>
+          </figure>
+        </div>
+        <div className='  flex items-center justify-start space-x-2'>
+          <p className=' text-lg flex-1'>{video?.title}</p>
+          <div className=' badge badge-primary badge-outline'>
+            {video?.status}
+          </div>
+          <a className=' link-hover link-primary' href={video?.url}>
+            <SocialIcon name='tiktok' />
+          </a>
+        </div>
+        <div>
+          <p>{video?.description}</p>
+        </div>
+
+        <div>
+          <ul className=' flex space-x-2 items-center justify-center'>
+            <li>
+              <button className='btn btn-outline btn-sm'>one</button>
+            </li>
+            <li>
+              <button className='btn btn-outline btn-sm'>one</button>
+            </li>
+            <li>
+              <button className='btn btn-outline btn-sm'>one</button>
+            </li>
+            <li>
+              <button className='btn btn-outline btn-sm'>one</button>
+            </li>
+          </ul>
+        </div>
+
+        <div className=' grid grid-cols-3 gap-3'>
+          <div className=' col-span-2'>
+            <Sheet color='bg-base-300'>
+              commenys
+            </Sheet>
+          </div>
+          <div className=' col-span-1'>
+            <div className="stats stats-vertical shadow">
+
+              <div className="stat">
+                <div className="stat-title">Downloads</div>
+                <div className="stat-value text-lg">31K</div>
+                <div className="stat-desc">Jan 1st - Feb 1st</div>
+              </div>
+
+              <div className="stat">
+                <div className="stat-title">New Users</div>
+                <div className="stat-value text-lg">4,200</div>
+                <div className="stat-desc">↗︎ 400 (22%)</div>
+              </div>
+
+              <div className="stat">
+                <div className="stat-title">New Registers</div>
+                <div className="stat-value text-lg">1,200</div>
+                <div className="stat-desc">↘︎ 90 (14%)</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div className=' grid  grid-flow-row-dense grid-cols-1 grid-rows-1 gap-5'>
+        <JsonTree data={video} />
+      </div>
+      {/* <ModalActions>
+          <button className='btn btn-sm' onClick={back}>
+            close
+          </button>
+        </ModalActions> */}
+    </Modal>
+
+  )
+}
+
+
+
+
+
+
+
+const Head: FC<{ channel: Channel }> = ({ channel }) => {
 
   return (
     <div className="stats shadow bg-neutral w-full">
@@ -295,7 +441,7 @@ const Head = () => {
         <div className="stat-figure text-secondary">
           <div className="avatar online w-20">
             <div className="  rounded-full">
-              <img src="https://placeimg.com/192/192/people" />
+              <Display type="image" title={channel?.name} value={channel?.logo} />
             </div>
           </div>
         </div>

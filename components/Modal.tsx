@@ -12,7 +12,8 @@ export type ModalProps = React.HTMLAttributes<HTMLDivElement> &
         responsive?: boolean
         closeable?: boolean
         onClose: MouseEventHandler
-        onClickBackdrop?: () => void
+        onClickBackdrop?: () => void,
+        size?: string
     }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
@@ -26,19 +27,21 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
             onClickBackdrop,
             dataTheme,
             className,
+            size,
             ...props
         },
         ref
     ): JSX.Element => {
         const containerClasses = twMerge(
             'modal',
+           
             clsx({
                 'modal-open': open,
                 'modal-bottom sm:modal-middle': responsive,
             })
         )
 
-        const bodyClasses = twMerge('modal-box', className)
+        const bodyClasses = twMerge('modal-box', className,  size)
 
         return (
             <div

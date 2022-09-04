@@ -1,4 +1,4 @@
-import React, { ReactNode, FC } from 'react';
+import React, { ReactNode, FC, PropsWithChildren } from 'react';
 import {
   FiEdit,
   FiEye,
@@ -55,13 +55,13 @@ export interface ListProps {
 
 }
 
-type SheetProps = ListProps & {
-  columns: any;
-  loading: boolean;
-  data: any
+type SheetProps = ListProps & PropsWithChildren<{
+  columns?: any;
+  loading?: boolean;
+  data?: any
   total?: string | number
   color?: string
-}
+}>
 
 export const Sheet: FC<SheetProps> = ({
   canCreate,
@@ -133,10 +133,10 @@ export const Sheet: FC<SheetProps> = ({
   return (
     <div className='p-2'>
       {loading ? <OnLoading /> :
-        <Card 
-        compact
-         bordered={false} 
-        className={`h-full  w-full  min-h-full overflow-visible ${color}` }>
+        <Card
+          compact
+          bordered={false}
+          className={`h-full  w-full  min-h-full overflow-visible ${color}`}>
           <CardBody>
             <SheetHeader
               title={title}

@@ -8,6 +8,8 @@ import {
 } from 'react-icons/fa';
 import { Dropdown } from '../ui2';
 import Breadcrumbs from '@/components/Breadcrumb'
+import { useBreadcrumb } from '@pankod/refine-core';
+import Link from 'next/link';
 export const TopNavigation: React.FC = () => {
   return (
     // <div className="flex flex-row items-center justify-evenly bg-gray-300 dark:bg-gray-700 bg-opacity-90 w-full h-16 m-0 shadow-lg">
@@ -23,17 +25,28 @@ export const TopNavigation: React.FC = () => {
 
 const Header: React.FC = () => {
   const hasSubMenu = false;
+  const { breadcrumbs } = useBreadcrumb();
+
   return (
     <div
-      className={`navbar w-full  bg-base-300 rounded-none m-0 py-1 ${
-        hasSubMenu && 'ltr:ml-16 rtl:mr-16'
-      }`}
+      className={`navbar w-full  bg-base-300 rounded-none m-0 py-1 ${hasSubMenu && 'ltr:ml-16 rtl:mr-16'
+        }`}
     >
       <div className="flex-1 ">
         <div className="flex flex-col items-start justify-start p-0 m-0 space-y-0 text-start">
-        {/* <a className="normal-case  p-0 text-start ">daisyUI</a> */}
+          {/* <a className="normal-case  p-0 text-start ">daisyUI</a> */}
+          <div className="text-sm breadcrumbs">
 
-        <Breadcrumbs omitRootLabel className='p-0 m-0' />
+            <ul>
+              {breadcrumbs.map(({ label, href, icon }) => (
+                <li key={label}>
+                  {icon}
+                  {href ? <Link href={href}>{label}</Link> : label}
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* <Breadcrumbs omitRootLabel className='p-0 m-0' /> */}
         </div>
 
       </div>

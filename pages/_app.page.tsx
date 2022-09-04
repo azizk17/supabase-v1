@@ -60,7 +60,8 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           {
             name: 'stations',
             list: StationList,
-            show: StationShow
+            show: StationShow,
+            // label: "Stations",
           },
           {
             name: 'channels',
