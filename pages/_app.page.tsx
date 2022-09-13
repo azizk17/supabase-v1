@@ -7,6 +7,8 @@ import { Refine } from '@pankod/refine-core';
 import routerProvider from '@pankod/refine-nextjs-router';
 import { dataProvider } from '@pankod/refine-supabase';
 import { authProvider } from 'utils/authProvider';
+import {default as restDataProvider} from "@pankod/refine-simple-rest";
+
 import { notificationProvider } from '@/utils/notificationProvider'
 import { supabaseClient } from 'utils';
 import { Layout } from '@/components/layout/Layout';
@@ -44,7 +46,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         notificationProvider={notificationProvider}
         // ReadyPage={ReadyPage}
         catchAll={<CustomErrorComponent />}
-        dataProvider={dataProvider(supabaseClient)}
+        dataProvider={{
+          default: dataProvider(supabaseClient), 
+          lab: restDataProvider(process.env.NEXT_PUBLIC_LAB_URL)}}
         authProvider={authProvider}
         DashboardPage={DashboardPage}
         LoginPage={SignIn}

@@ -15,6 +15,7 @@ import { Sheet } from '@/components/Sheet';
 import { Select } from '@/components/Select';
 import { ImageInput } from '@/components/ImageInput';
 import Button from '@/components/ui2/Button';
+import FormDrawer from '@/components/FormDrawer';
 
 
 
@@ -39,7 +40,7 @@ export const StationCreateForm: React.FC<UseModalFormReturnType> = ({
     handleSubmit,
     modal: { visible, close },
     saveButtonProps,
-    formState: {isSubmitting},
+    formState: { isSubmitting },
 }) => {
     const t = useTranslate();
     // const {
@@ -71,7 +72,21 @@ export const StationCreateForm: React.FC<UseModalFormReturnType> = ({
 
     return (
 
-        <Modal open={visible} onClose={close}>
+        <FormDrawer
+            closeable={false} isOpen={visible} position="right"
+            onClose={close}
+            actions={[
+                <Button color='primary' disabled={
+                    isSubmitting
+                } loading={isSubmitting} onClick={handleSubmit(onFinish)}>
+                    {t('submit')}
+                </Button>,
+                <Button onClick={close}>
+                    {t('close')}
+                </Button>
+            ]}
+        >
+
             {/* {JSON.stringify(data)} */}
             <Sheet title={t('createNew', 'Create New')}
             >
@@ -139,21 +154,8 @@ export const StationCreateForm: React.FC<UseModalFormReturnType> = ({
                         )}
                     </div>
                 </form>
-
-
-                <ModalActions>
-                    <Button color='primary' disabled={
-                        isSubmitting
-                    } loading={isSubmitting} onClick={handleSubmit(onFinish)}>
-                        {t('submit')}
-                    </Button>
-                    <Button onClick={close}>
-                        {t('close')}
-                    </Button>
-                </ModalActions>
-
             </Sheet>
-        </Modal>
+        </FormDrawer>
     );
 }
 

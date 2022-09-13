@@ -14,6 +14,9 @@ import { channel, Channel } from 'diagnostics_channel';
 import { Item } from '@/components/ui';
 import Link from 'next/link';
 import SocialIcon from '@/components/SocialIcon';
+import FormDrawer from '@/components/FormDrawer';
+import { useModalForm } from '@pankod/refine-react-hook-form';
+import ChannelAddForm from '../channels/add.form';
 
 export const StationShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -39,6 +42,17 @@ export const StationShow: React.FC<IResourceComponentsProps> = () => {
   const { data, isLoading } = queryResult;
   const record = data?.data;
 
+
+  const addModal = useModalForm({
+    refineCoreProps: { action: "create", resource: 'channels' },
+    modalProps: {
+      autoResetForm: true
+    }
+
+  });
+  const {
+    modal: { show: showAddModal, visible, close },
+  } = addModal;
   return (
     <Sheet
       title={record?.name}
@@ -63,8 +77,11 @@ export const StationShow: React.FC<IResourceComponentsProps> = () => {
               <h5 className="text-xl font-bold leading-none ">
                 Channles
               </h5>
-              <a href="#" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                {t('Add new', 'Add new')}
+             <ChannelAddForm {...addModal} />
+              <a
+                onClick={showAddModal}
+                className=" link link-hover link-primary font-semibold">
+                {t('Add new', 'Add New')}
               </a>
             </div>
             <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -77,9 +94,9 @@ export const StationShow: React.FC<IResourceComponentsProps> = () => {
                       {/* <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Neil image" /> */}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p onClick={() => show('channels', item?.id)} className=" link link-hover text-sm font-medium truncate ">
-                          {item?.name}
-                        </p>
+                      <p onClick={() => show('channels', item?.id)} className=" link link-hover text-sm font-medium truncate ">
+                        {item?.name}
+                      </p>
                       {/* <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                         email@windster.com
                       </p> */}

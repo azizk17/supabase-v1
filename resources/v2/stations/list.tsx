@@ -15,6 +15,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import StationCreateForm from './create.form';
 import Link from 'next/link';
 import { useModalForm } from '@pankod/refine-react-hook-form';
+import { Button } from '@/components/ui2';
 
 export const StationList: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -118,9 +119,11 @@ export const StationList: React.FC<IResourceComponentsProps> = () => {
   const {
     modal: { show: showCreateModal,  },
   } = createModalFormReturnValues;
+
+  
   return (
     <Sheet
-      canCreate={true}
+      canCreate={false}
       createButtonProps={
         {
           onClick: () => showCreateModal()

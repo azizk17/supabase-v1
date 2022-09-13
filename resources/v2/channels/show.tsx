@@ -6,9 +6,12 @@ import {
   useNavigation,
   useMany,
   useList,
-  useSelect
+  useSelect,
+  useCustom,
+  useUpdate
 } from '@pankod/refine-core';
 
+import axios from 'axios'
 import { Channel, Country, Language, Station, Video } from 'types';
 import { Card, Title, Text, DateField } from '@/components/ui';
 import { Sheet } from '@/components/Sheet';
@@ -25,6 +28,8 @@ import { default as ReactSelect, StylesConfig, components, InputProps, Options }
 import { FC, useEffect, useState } from 'react';
 import Modal from '@/components/Modal';
 import SocialIcon from '@/components/SocialIcon';
+import { FiEdit, FiRefreshCcw } from 'react-icons/fi';
+
 
 export const ChannelShow: React.FC<IResourceComponentsProps> = () => {
   const t = useTranslate();
@@ -90,32 +95,67 @@ export const ChannelShow: React.FC<IResourceComponentsProps> = () => {
   });
 
 
+  const { data: cData, isLoading: sIsLoading, isFetching: cIsFetching, refetch: cRefetch } = useOne({
+    resource: 'channels',
+
+    id: record?.uniqueId,
+    dataProviderName: 'lab',
+    queryOptions: {
+      enabled: false,
+      cacheTime: 3000,
+      onSuccess: (data) => {
+        refetch()
+      }
+      
+    },
+  },
+  )
+
+
+  const { mutate: updateChannel } = useUpdate<Channel>();
+
+  // useEffect(() => {
+  //   updateChannel({
+  //     resource: 'channels',
+  //     id: query?.id,
+  //     values: cData,tati
+  //   })
+
+  // }, [cData])
+
+
+
+
+
 
   return (
     <Sheet
       title={
         <div className=' flex space-x-2 items-center justify-start'>
-          <p>{record?.name}</p>
+          {/* <p>{record?.name}</p> */}
           <PlatformSelect onChange={setShowId} loading={stationQueryResult.isLoading} channels={stationQueryResult.data?.data?.channels} />
         </div>
       }
       subtitle={record?.description}
       actions={[
-        <Button title="edit" className=' btn btn-sm' onClick={() => edit('channels', record?.id)} />
+        <Button endIcon={<FiEdit />} className=' btn btn-sm ' onClick={() => edit('channels', record?.id)} />,
+        <Button loading={cIsFetching} endIcon={<FiRefreshCcw />} className=' btn btn-sm  ' onClick={() => cRefetch()} />,
+        // <Button title="edit" className=' btn btn-sm  btn-ghost' onClick={() => edit('channels', record?.id)} />,
+        // <Button title="edit" className=' btn btn-sm  btn-ghost' onClick={() => edit('channels', record?.id)} />,
       ]}
-      createButtonProps={{
 
-      }}
       key={query?.id}
     >
 
-      {/* <JsonTree data={queryResult} /> */}
+      <JsonTree data={cData} />
 
       <div className=' w-full flex items-center justify-center'>
-        <Head channel={record}  />
+        <Head channel={record} />
       </div>
       <div className=' grid grid-cols-2 gap-5'>
-
+        <p className=' text-4xl text-orange-400'>
+          {process.env.NEXT_PUBLIC_API_URL}
+        </p>
         <Videos />
         <Sheet title={
 
@@ -144,7 +184,7 @@ export const ChannelShow: React.FC<IResourceComponentsProps> = () => {
               <Display type="text" resource="countries" key="id" title="country" value={record?.countries.name} />
               <Display type="text" title="credential" value={record?.credential_id.id} />
               <Display type="text" title="language" value={record?.languages.name} />
-              <Display type="text" title="metadata" value={record?.metadata} />
+              {/* <Display type="text" title="metadata" value={record?.metadata} /> */}
               <Display type="text" title="orginal_url" value={record?.orginal_url} />
               <Display type="text" title="station" value={stationQueryResult.data?.data.name} />
               <Display type="text" title="platform" value={record?.platform_name} />
@@ -286,21 +326,33 @@ const PlatformSelect: FC<{ onChange: Function, loading: boolean, channels: Chann
   //   optionValue: 'name',
 
   // })
-  const options = channels?.map((i: Channel) => ({ label: i.name, value: i.id }))
+
+  const Label = (name: string, paltform: string) => {
+    return (
+      <div className=' flex space-x-2'>
+        <span className=''> {name} </span>
+        <SocialIcon name={paltform} />
+      </div>
+    )
+  }
+  const options = channels?.map((i: Channel) => ({ label: Label(i.name, i.platform_name), value: i.id }))
   // .filter((c) => c.value !== query?.id)
   return (
     // <JsonTree data={options} />
-    <ReactSelect
-      onChange={({ value }) => replace(showUrl('channels', value)).then(() => onChange(value))}
-      options={options}
-      // value={platforms.find((i) => i.value === query?.platform)}
-      placeholder={t('select', 'Select')}
-      // components={{ Input }}
-      className="input-select-container"
-      classNamePrefix="input-select"
-      menuPlacement='auto'
-      menuPosition='fixed'
-    />
+    channels ?
+      <ReactSelect
+        onChange={({ value }) => replace(showUrl('channels', value)).then(() => onChange(value))}
+        options={options}
+        defaultValue={options?.filter((c) => c.value === query?.id)}
+        // value={platforms.find((i) => i.value === query?.platform)}
+        placeholder={t('select', 'Select')}
+        // components={{ Input }}
+        className="input-select-container"
+        classNamePrefix="input-select"
+        menuPlacement='auto'
+        menuPosition='fixed'
+      />
+      : <></>
 
 
     // <Select

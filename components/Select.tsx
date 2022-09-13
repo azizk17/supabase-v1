@@ -41,7 +41,7 @@ const customStyles = {
     }
 }
 
-export type SelectProps =  {
+export type SelectProps = {
     name: string,
     options: any
     className?: string
@@ -54,12 +54,13 @@ export type SelectProps =  {
     isDisabled?: boolean
     isSearchable?: boolean
     onInputChange?: any
+    menuPortalTarget?: HTMLElement | null | undefined
 }
 
 export const Select = React.forwardRef<HTMLLabelElement, SelectProps>(
     ({ children, name, options, className, onChange, isReady = false,
-        isLoading, isDisabled, isSearchable,onInputChange,
-        defaultValue,
+        isLoading, isDisabled, isSearchable, onInputChange,
+        defaultValue, menuPortalTarget,
         ...props }, ref): JSX.Element => {
         const t = useTranslate();
         return (
@@ -77,10 +78,18 @@ export const Select = React.forwardRef<HTMLLabelElement, SelectProps>(
                         onInputChange={onInputChange}
                         placeholder={t('select', 'Select')}
                         // components={{ Input }}
-                        className="input-select-container"
+                        styles={{
+                            menuPortal: ({ left, ...provided }, state) => ({
+                                ...provided,
+                            })
+                        }}
                         classNamePrefix="input-select"
+                        className="input-select-container"
                         menuPlacement='auto'
-                        menuPosition='absolute'
+                        menuPosition='fixed'
+                        // menuPortalTarget={menuPortalTarget}
+                        closeMenuOnScroll={() => true}
+
                         {...props}
                     // theme={(theme) => ({
                     //     ...theme,

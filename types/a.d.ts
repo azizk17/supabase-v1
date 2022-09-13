@@ -26,6 +26,11 @@ export type EnumSourceStatus = 'removed' | 'private' | 'public';
 
 export type Enumvideostatus = 'generateing' | 'editing' | 'ready' | 'published' | 'removed' | 'canceled' | 'scheduled';
 
+export type Avatar = {
+  thumb: string
+  md?: string
+  lg?: string
+}
 
 export type Animation = {
     /**
@@ -47,6 +52,7 @@ export type Channel = {
   id: string;
   name?: string;
   apikey?: string;
+  uniqueId: string;
    /**
   * Note:This is a Foreign Key to `countries.id`.<fk table='countries' column='id'/>
   *  
@@ -74,7 +80,7 @@ export type Channel = {
   *  
   */
   platform_name: string;
-  thumb?: string;
+  thumb?: Avatar;
   description?: string;
   logo?: string;
   watermark?: string;

@@ -34,8 +34,8 @@ export const notificationProvider: NotificationProvider = {
         );
       }
     } else {
-      if (toast.isActive(key as React.ReactText)) {
-        toast.update(key as React.ReactText, {
+      if (toast.isActive(key as string | number)) {
+        toast.update(key as string | number, {
           render: message,
           closeButton: true,
           autoClose: 5000,

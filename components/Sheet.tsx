@@ -177,7 +177,7 @@ const SheetHeader: FC<HeaderProps> = ({ title, subtitle, extra, actions }) => {
   return (
     <div className='flex justify-between items-center'>
       <CardTitle>
-        <div className='flex flex-col justify-start items-center'>
+        <div className='flex flex-col justify-start space-y-2'>
           {title}
           <div className=' text-sm '>
             {subtitle}

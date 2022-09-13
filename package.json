@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 next dev",
+    "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "stripe:listen": "stripe listen --forward-to=localhost:3000/api/webhooks --project-name=saas-starter",
@@ -15,6 +15,7 @@
     "@pankod/refine-nextjs-router": "^3.31.0",
     "@pankod/refine-react-hook-form": "^3.31.0",
     "@pankod/refine-react-table": "^4.5.0",
+    "@pankod/refine-simple-rest": "^3.29.0",
     "@pankod/refine-supabase": "^3.29.0",
     "@stripe/stripe-js": "1.22.0",
     "@supabase/supabase-auth-helpers": "^1.4.2",
@@ -24,6 +25,7 @@
     "classnames": "2.3.1",
     "daisyui": "^2.20.0",
     "dotenv": "^16.0.1",
+    "focus-trap-react": "^10.0.0",
     "fuzzy": "^0.1.3",
     "handlebars-helpers": "^0.10.0",
     "inquirer-checkbox-plus-prompt": "^1.0.1",
@@ -48,7 +50,8 @@
     "react-toastify": "^9.0.7",
     "stripe": "8.201.0",
     "swr": "1.3.0",
-    "tailwindcss": "^3.1.7"
+    "tailwindcss": "^3.1.7",
+    "tiktok-signature": "^1.7.3"
   },
   "devDependencies": {
     "@iconify/icons-ph": "^1.2.2",
